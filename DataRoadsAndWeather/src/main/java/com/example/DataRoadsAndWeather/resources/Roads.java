@@ -14,14 +14,33 @@ public class Roads implements Serializable {
 
     public Roads(){;}
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "location" )
     private String location;
-    @Embedded private List<Values> valuesAndDate;
+    @Autowired
+    private java.util.Date Date;
 
-    public List<Values> getValuesAndDate() {
-        return valuesAndDate;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "DATE")
+    public java.util.Date getDate() {
+
+        return this.Date;
     }
 
+    @Column(name = "value")
+    private Double value;
+
+    public void setDate(java.util.Date date) {
+        Date = date;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public Double getValue() {
+        return value;
+    }
     public String getLocation() {
         return location;
     }
@@ -35,7 +54,5 @@ public class Roads implements Serializable {
         this.location = location;
     }
 
-    public void setValuesAndDate(List<Values> valuesAndDate) {
-        this.valuesAndDate = valuesAndDate;
-    }
+
 }
