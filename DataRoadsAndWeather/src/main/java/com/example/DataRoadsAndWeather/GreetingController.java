@@ -1,4 +1,4 @@
-package com.example.DataRoadsAndWeather.Service;
+package com.example.DataRoadsAndWeather;
 
 import com.example.DataRoadsAndWeather.Data.Message;
 import com.example.DataRoadsAndWeather.Data.Roads;

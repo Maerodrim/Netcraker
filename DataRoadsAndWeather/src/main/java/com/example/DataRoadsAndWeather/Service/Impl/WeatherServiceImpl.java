@@ -18,10 +18,6 @@ import java.util.List;
 public class WeatherServiceImpl implements WeatherService {
     private WeatherRepo weatherRepo;
 
-    public WeatherServiceImpl(WeatherRepo weatherRepository) {
-        this.weatherRepo = weatherRepository;
-    }
-
     @Override
     public List<Weather> getAllWeathers() throws NullPointerException {
 
@@ -31,7 +27,7 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Override
-    public Weather getOnlyOneUser(Long id) throws NullPointerException {
+    public Weather getOnlyOneWeathers(Long id) throws NullPointerException {
         return this.weatherRepo.findById(id).orElseThrow(NullPointerException::new);
     }
 

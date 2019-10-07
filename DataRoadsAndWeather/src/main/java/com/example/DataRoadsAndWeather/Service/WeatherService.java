@@ -9,9 +9,9 @@ public interface WeatherService {
 
     List<Weather> getAllWeathers() throws NullPointerException;
 
-    Weather getOnlyOneUser(Long id) throws NullPointerException;
+    Weather getOnlyOneWeathers(Long id) throws NullPointerException;
 
-    Weather signUp(WeatherDto userDto) throws IllegalArgumentException;
+    Weather signUp(WeatherDto weatherDto) throws IllegalArgumentException;
 
     List<Weather> getAllExceptPrincipalWeather();
 }
