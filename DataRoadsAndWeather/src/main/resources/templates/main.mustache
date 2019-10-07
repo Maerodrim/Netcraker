@@ -18,6 +18,17 @@
     </form>
 </div>
 <div>
+    <form method="post" action="/addWeather">
+        <input type="text" name="locationWeather" placeholder="Введите локацию" />
+        <input type="text" name="dateWeather" placeholder="Введите время" />
+        <input type="text" name="valueWind" placeholder="Значение ветер">
+        <input type="text" name="valueRain" placeholder="Значение облачность" />
+        <input type="text" name="valueOvercast" placeholder="Значение дождь" />
+        <input type="text" name="valueTemp" placeholder="Значение температура">
+        <button type="submit">Добавить</button>
+    </form>
+</div>
+<div>
     <form method="post" action="/all">
         <button type="submit">Удалить</button>
     </form>
@@ -40,8 +51,20 @@
         <b>{{id}}</b>
         <span>{{locationRoad}}</span>
         <span>{{dateRoad}}</span>
-        <i>{{valueRoad}}</i>
+        <span>{{valueRoad}}</span>
     </div>
 {{/roads}}
+<div>Список погодных условий</div>
+{{#weathers}}
+    <div>
+        <b>{{id}}</b>
+        <span>{{locationWeather}}</span>
+        <span>{{dateWeather}}</span>
+        <span>{{valueWind}}</span>
+        <span>{{valueRain}}</span>
+        <span>{{valueOvercast}}</span>
+        <span>{{valueTemp}}</span>
+    </div>
+{{/weathers}}
 </body>
 </html>

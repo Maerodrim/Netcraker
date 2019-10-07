@@ -13,7 +13,7 @@ public class Roads implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    @Column(name = "locationRoad", unique = false, nullable = true)
+    @Column(name = "locationRoad", unique = false, nullable = false)
     private String locationRoad;
     @Column(name = "dateRoad", unique = false, nullable = true)
     private String dateRoad;

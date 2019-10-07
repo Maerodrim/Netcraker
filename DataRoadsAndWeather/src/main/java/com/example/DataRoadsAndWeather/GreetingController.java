@@ -2,30 +2,66 @@ package com.example.DataRoadsAndWeather;
 
 import com.example.DataRoadsAndWeather.Data.Message;
 import com.example.DataRoadsAndWeather.Data.Roads;
+import com.example.DataRoadsAndWeather.Data.Weather;
+import com.example.DataRoadsAndWeather.Dto.Ext.SingleResponseObjectDtoExt;
+import com.example.DataRoadsAndWeather.Dto.SingleResponseObjectDto;
+import com.example.DataRoadsAndWeather.Dto.Status.StatusEnum;
+import com.example.DataRoadsAndWeather.Dto.WeatherDto;
 import com.example.DataRoadsAndWeather.Interface.MessageRepo;
 import com.example.DataRoadsAndWeather.Interface.RoadsRepo;
+import com.example.DataRoadsAndWeather.Interface.WeatherRepo;
+import com.example.DataRoadsAndWeather.Mappers.RoadsMapper;
+import com.example.DataRoadsAndWeather.Mappers.WeatherMapper;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
-@Controller
+@RestController
 public class GreetingController {
     @Autowired
     private MessageRepo messageRepo;
     @Autowired
     private RoadsRepo roadsRepo;
+    @Autowired
+    private WeatherRepo weatherRepo;
+    @Autowired
+    private final RoadsMapper roadsMapper = RoadsMapper.INSTANCE;
+    @Autowired
+    private final WeatherMapper weatherMapper = WeatherMapper.INSTANCE;
 
-    @GetMapping("/greeting")
-    public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "World") String name,
-            Map<String, Object> model
-    ) {
-        model.put("name", name);
-        return "greeting";
+
+    @GetMapping
+    @JsonView
+    public SingleResponseObjectDto getUsersList() {
+
+
+        SingleResponseObjectDtoExt<Object> singleResponseObjectDto = new SingleResponseObjectDtoExt<>(
+                StatusEnum.AllDoneWell,
+                "Вернул все записи",
+                true,
+                weatherMapper.toWeatherDTOs((Colect)weatherRepo.findAll())
+        );
+
+        return singleResponseObjectDto;
+    }
+
+    @PostMapping("addWeatherJson")
+    @JsonView
+    public SingleResponseObjectDto postWeather(@RequestBody WeatherDto weatherDto) {
+
+        Optional<WeatherDto> optionalWeatherDto = Optional.of(this.weatherMapper.toWeatherDto(this.userService.signUp(weatherDto)));
+        weatherRepo.save(weatherMapper.toWeather(weatherDto));
+        SingleResponseObjectDto singleResponseObjectDto = new SingleResponseObjectDtoExt<>(
+                StatusEnum.AllDoneWell,
+                "Новая запись",
+                true,
+                optionalWeatherDto.orElseThrow(NullPointerException::new)
+        );
+
+        return singleResponseObjectDto;
     }
 
     @GetMapping
@@ -36,6 +72,10 @@ public class GreetingController {
         Iterable<Message> messages = messageRepo.findAll();
 
         model.put("messages", messages);
+
+        Iterable<Weather> weathers = weatherRepo.findAll();
+
+        model.put("weathers", weathers);
 
         return "main";
     }
@@ -66,11 +106,27 @@ public class GreetingController {
 
         return "main";
     }
+    @PostMapping("addWeather")
+    public String addWeather(@RequestParam String locationWeather, @RequestParam String dateWeather,@RequestParam String valueWind,
+                             @RequestParam String valueRain, @RequestParam String valueOvercast,@RequestParam String valueTemp,
+                           Map<String, Object> model) {
+        Weather weather = new Weather(locationWeather, dateWeather,Double.parseDouble(valueWind),
+                Double.parseDouble(valueRain), Double.parseDouble(valueOvercast),
+                Double.parseDouble(valueTemp));
 
+        weatherRepo.save(weather);
+
+        Iterable<Weather> weathers = weatherRepo.findAll();
+
+        model.put("weathers", weathers);
+
+        return "main";
+    }
     @PostMapping(path = "/all")
     public String delete() {
         roadsRepo.deleteAll();
         messageRepo.deleteAll();
+        weatherRepo.deleteAll();
         return "main";
     }
 
