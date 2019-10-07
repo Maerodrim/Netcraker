@@ -13,6 +13,6 @@ public interface WeatherService {
 
     Weather signUp(WeatherDto userDto) throws IllegalArgumentException;
 
-    List<Weather> getAllExceptPrincipalUser();
+    List<Weather> getAllExceptPrincipalWeather();
 }
 

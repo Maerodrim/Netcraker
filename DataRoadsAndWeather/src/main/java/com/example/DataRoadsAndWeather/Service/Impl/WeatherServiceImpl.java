@@ -8,19 +8,14 @@ import com.example.DataRoadsAndWeather.Service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
-@RequiredArgsConstructor(onConstructor = @_(@Autowired))
+@RequiredArgsConstructor(onConstructor=@__(@Autowired))
 @Service
-@Primary
 @Log4j2
 public class WeatherServiceImpl implements WeatherService {
-
-    @Autowired
     private WeatherRepo weatherRepo;
 
     public WeatherServiceImpl(WeatherRepo weatherRepository) {
@@ -32,7 +27,7 @@ public class WeatherServiceImpl implements WeatherService {
 
         log.info("getAllUsers() method");
 
-        return this.weatherRepo.findAll();
+        return (List<Weather>) this.weatherRepo.findAll();
     }
 
     @Override
@@ -45,17 +40,15 @@ public class WeatherServiceImpl implements WeatherService {
 
         Weather weather = WeatherMapper.INSTANCE.toWeather(weatherDto);
 
-        // Добавляется новый пользователь, id must be null
         weather.setId(null);
 
-        log.info("Сохранёна погода: " + weather.toString());
+        log.info("Сохранена погода: " + weather.toString());
 
-        return com.example.DataRoadsAndWeather.Service.Impl.weatherRepo.save(weather);
+        return weatherRepo.save(weather);
     }
 
-
     @Override
-    public List<Weather> getAllExceptPrincipalWeather() {
-        return this.weatherRepo.findAll();
+    public List<Weather> getAllExceptPrincipalWeather(){
+        return (List<Weather>) this.weatherRepo.findAll();
     }
 }
