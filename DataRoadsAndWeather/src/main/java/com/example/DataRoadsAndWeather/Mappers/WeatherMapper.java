@@ -1,6 +1,4 @@
 package com.example.DataRoadsAndWeather.Mappers;
-
-
 import com.example.DataRoadsAndWeather.Data.Weather;
 import com.example.DataRoadsAndWeather.Dto.WeatherDto;
 import org.mapstruct.InheritInverseConfiguration;

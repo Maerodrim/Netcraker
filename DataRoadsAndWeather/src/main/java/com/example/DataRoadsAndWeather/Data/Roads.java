@@ -1,7 +1,5 @@
 package com.example.DataRoadsAndWeather.Data;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

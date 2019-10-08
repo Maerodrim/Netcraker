@@ -8,6 +8,7 @@ import com.example.DataRoadsAndWeather.Service.RoadsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor(onConstructor=@__(@Autowired))
 @Service
+@Primary
 @Log4j2
 public class RoadsServiceImpl implements RoadsService {
     private RoadsRepo roadsRepo;
