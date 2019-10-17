@@ -16,9 +16,4 @@ public class SingleResponseObjectDtoView {
 
     public interface Full extends StatusCode, Message, Success, DataOrException {
     }
-
-    public interface FullWithWeatherFull extends Full, WeatherDtoView.Full {
-    }
-    public interface FullWithRoadsFull extends Full, RoadsDtoView.Full {
-    }
 }

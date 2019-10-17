@@ -1,4 +1,4 @@
-package com.example.DataRoadsAndWeather.Data;
+package com.example.DataRoadsAndWeather.Model;
 
 import javax.persistence.*;
 
@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Message {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Integer idMessage;
     @Column(name = "text", unique = false, nullable = true)
     private String text;
     @Column(name = "tag", unique = false, nullable = true)
@@ -30,11 +30,11 @@ public class Message {
     }
 
     public Integer getId() {
-        return id;
+        return idMessage;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.idMessage = id;
     }
 
     public String getTag() {
