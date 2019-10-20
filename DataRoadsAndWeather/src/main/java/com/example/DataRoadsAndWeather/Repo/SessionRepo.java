@@ -12,4 +12,5 @@ import java.util.List;
 @Table(name = "Session")
 public interface SessionRepo extends CrudRepository<Session, Long> {
     List<Session> findByIdSession(Integer IdSession);
+
 }

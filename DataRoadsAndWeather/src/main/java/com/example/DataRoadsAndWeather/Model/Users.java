@@ -17,7 +17,6 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idUsers", unique = true, nullable = true)
     private Integer idUsers;
     @Column(name = "name", unique = false, nullable = true)
     private String name;

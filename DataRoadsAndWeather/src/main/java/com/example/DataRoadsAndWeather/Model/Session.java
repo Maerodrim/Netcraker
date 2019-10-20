@@ -8,9 +8,10 @@ import java.util.Set;
 @Table(name = "Session")
 public class Session {
     public Session(){}
-    public Session(String nameSession, Integer dataSession) {
+
+    public Session(String nameSession, Set<Users> users) {
         this.nameSession = nameSession;
-        this.dataSession = dataSession;
+        this.users = users;
     }
 
     @Id
@@ -20,13 +21,13 @@ public class Session {
     @Column(name = "nameSession", unique = false, nullable = true)
     private String nameSession;
     @Column(name = "dataSession", unique = false, nullable = true)
-    private Integer dataSession;
+    private Integer dataSession=9;
     @Column(name = "Dev", unique = false, nullable = true)
-    private Integer Development;
+    private Integer Development=2;
     @Column(name = "Anal", unique = false, nullable = true)
-    private Integer Analysis;
+    private Integer Analysis=3;
     @Column(name = "Test", unique = false, nullable = true)
-    private Integer Testing;
+    private Integer Testing=2;
     @OneToMany
     @Column(name = "Users", unique = false, nullable = true)
     private Set<Users> users;
@@ -108,5 +109,9 @@ public class Session {
 
     public Set<Card> getCard() {
         return card;
+    }
+
+    public void setCard(Set<Card> card) {
+        this.card = card;
     }
 }

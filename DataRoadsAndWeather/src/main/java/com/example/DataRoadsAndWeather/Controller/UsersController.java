@@ -14,18 +14,25 @@ public class UsersController {
     @Autowired
     private UsersRepo usersRepo;
 
-    @PostMapping("add")
+    @PostMapping("/add")
     public String add(@RequestParam String name,@RequestParam String email,@RequestParam String password,
                       @RequestParam String role, Map<String, Object> model) {
         Users user = new Users(name,email,password,role);
 
         usersRepo.save(user);
 
+        model.put("users", user);
+
         return "url:/MessageController/main";
     }
-    @PostMapping("getPassword")
+    @PostMapping("/getPassword")
     public Boolean getPassword(@RequestParam String email,@RequestParam String password, Map<String, Object> model) {
 
         return usersRepo.findByEmail(email).get(0).getPassword().toString().equals(password);
+    }
+    @PostMapping("/getRole")
+    public String getRole(@RequestParam String email, Map<String, Object> model) {
+
+        return usersRepo.findByEmail(email).get(0).getRole();
     }
 }

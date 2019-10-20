@@ -11,9 +11,9 @@ public class Card {
     public Card() {
     }
 
-    public Card(Session session, String nameCard, Integer idSession, Integer dataBegSession, Integer allDevelopment,
-                Integer allAnalysis, Integer allTesting, Double money, ColorCard colorCard, Integer priority) {
-        this.session=session;
+    public Card(String nameCard, Integer idSession, Integer dataBegSession, Integer allDevelopment,
+                Integer allAnalysis, Integer allTesting, Double money, ColorCard colorCard, Integer priority,Integer subs) {
+       // this.session=session;
         this.nameCard = nameCard;
         this.dataBegSession = dataBegSession;
         this.allDevelopment = allDevelopment;
@@ -22,40 +22,43 @@ public class Card {
         this.money = money;
         this.colorCard = colorCard;
         this.priority = priority;
+        this.subs=subs;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JoinColumn(name = "idCard", unique = true, nullable = true)
+    @Column(name = "idCard", unique = true, nullable = true)
     private Integer idCard;
-    @ManyToOne
-    @JoinColumn(name = "idCard", unique = true, nullable = true)
-    private Session session;
-    @JoinColumn(name = "nameCard", unique = false, nullable = true)
+   /* @ManyToOne
+    @Column(name = "idCard", unique = true, nullable = true)
+    private Session session;*/
+    @Column(name = "nameCard", unique = false, nullable = true)
     private String nameCard;
-    @JoinColumn(name = "dataBegSession", unique = false, nullable = true)
+    @Column(name = "dataBegSession", unique = false, nullable = true)
     private Integer dataBegSession;
-    @JoinColumn(name = "dataEndSession", unique = false, nullable = true)
+    @Column(name = "dataEndSession", unique = false, nullable = true)
     private Integer dataEndSession;
-    @JoinColumn(name = "Dev", unique = false, nullable = true)
+    @Column(name = "Dev", unique = false, nullable = true)
     private Integer development = 0;
-    @JoinColumn(name = "AllDev", unique = false, nullable = true)
+    @Column(name = "AllDev", unique = false, nullable = true)
     private Integer allDevelopment;
-    @JoinColumn(name = "Anal", unique = false, nullable = true)
+    @Column(name = "Anal", unique = false, nullable = true)
     private Integer analysis = 0;
-    @JoinColumn(name = "AllAnal", unique = false, nullable = true)
+    @Column(name = "AllAnal", unique = false, nullable = true)
     private Integer allAnalysis;
-    @JoinColumn(name = "Test", unique = false, nullable = true)
+    @Column(name = "Test", unique = false, nullable = true)
     private Integer testing = 0;
-    @JoinColumn(name = "AllTest", unique = false, nullable = true)
+    @Column(name = "AllTest", unique = false, nullable = true)
     private Integer allTesting;
-    @JoinColumn(name = "Money", unique = false, nullable = true)
+    @Column(name = "Money", unique = false, nullable = true)
     private Double money;
+    @Column(name = "Subs", unique = false, nullable = true)
+    private Integer subs;
     @Column(name = "Color", unique = false, nullable = true)
     private ColorCard colorCard;
-    @JoinColumn(name = "CardStatus", unique = false, nullable = true)
+    @Column(name = "CardStatus", unique = false, nullable = true)
     private CardStatus status = CardStatus.Selected;
-    @JoinColumn(name = "Priority", unique = false, nullable = true)
+    @Column(name = "Priority", unique = false, nullable = true)
     private Integer priority;
 
 
@@ -167,5 +170,13 @@ public class Card {
 
     public Integer getIdCard() {
         return idCard;
+    }
+
+    public Integer getSubs() {
+        return subs;
+    }
+
+    public void setSubs(Integer subs) {
+        this.subs = subs;
     }
 }
