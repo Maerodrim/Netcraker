@@ -15,36 +15,33 @@ public class SessionController {
     @Autowired
     private SessionRepo sessionRepo;
 
-    @GetMapping
-    public String main(Map<String, Object> model) {
-
-        Iterable<Session> cards = sessionRepo.findAll();
-
-        model.put("Session", cards);
-
-        return "main";
-    }
-
     @PostMapping("addSession")
-    public String addSession(@RequestParam String nameSession, @RequestParam Set<Users> users,
-                             Map<String, Object> model) {
+    public Integer addSession(@RequestParam String nameSession, @RequestParam Set<Users> users,
+                              Map<String, Object> model) {
         Session session = new Session(nameSession, users);
 
         sessionRepo.save(session);
 
-        return "main";
+        return sessionRepo.findByNameSession(nameSession).get(0).getIdSession();
     }
+
     @PostMapping("addNullPackCard")
-    public String addSession(@RequestParam Integer idSession,
-                             Map<String, Object> model) {
-            sessionRepo.findByIdSession(idSession).get(0).setCard(sessionRepo.findByIdSession(0).get(0).getCard());
-            return "main";
+    public String addNullPackSession(@RequestParam Integer idSession,
+                                     Map<String, Object> model) {
+        sessionRepo.findByIdSession(idSession).get(0).setCard(sessionRepo.findByIdSession(0).get(0).getCard());
+        return "Ok";
     }
 
     @PostMapping(path = "/allSession")
     public String delete() {
         sessionRepo.deleteAll();
-        return "main";
+        return "Ok";
+    }
+
+    @DeleteMapping(path = "DeleteSession")
+    public String deleteSession(@RequestParam Integer idSession) {
+        sessionRepo.delete(sessionRepo.findByIdSession(idSession).get(0));
+        return "Ok";
     }
 
     @PostMapping("filterCard")
@@ -59,49 +56,48 @@ public class SessionController {
 
         model.put("card", card);
 
-        return "main";
+        return "Ok";
     }
 
-    @PostMapping("getCard")
+    @GetMapping("getCard")
     public String getCard(@RequestParam Integer idSession, Map<String, Object> model) {
 
         return sessionRepo.findByIdSession(idSession).get(0).getCard().toString();
     }
 
-    @PostMapping("getDate")
+    @GetMapping("getDate")
     public Integer getDate(@RequestParam Integer idSession, Map<String, Object> model) {
 
         return sessionRepo.findByIdSession(idSession).get(0).getDataSession();
     }
 
-    @PostMapping("getAnalysis")
+    @GetMapping("getAnalysis")
     public Integer getAnalysis(@RequestParam Integer idSession, Map<String, Object> model) {
         return sessionRepo.findByIdSession(idSession).get(0).getAnalysis();
     }
 
-    @PostMapping("getDevelopment")
+    @GetMapping("getDevelopment")
     public Integer getDevelopment(@RequestParam Integer idSession, Map<String, Object> model) {
         return sessionRepo.findByIdSession(idSession).get(0).getDevelopment();
     }
 
-    @PostMapping("getTesting")
+    @GetMapping("getTesting")
     public Integer getTesting(@RequestParam Integer idSession, Map<String, Object> model) {
         return sessionRepo.findByIdSession(idSession).get(0).getTesting();
     }
 
-    @PostMapping("getTesting")
-    public void setTesting(@RequestParam Integer idSession,@RequestParam Integer value, Map<String, Object> model) {
-         sessionRepo.findByIdSession(idSession).get(0).setTesting(value);
+    @PostMapping("setTesting")
+    public void setTesting(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+        sessionRepo.findByIdSession(idSession).get(0).setTesting(value);
     }
-    @PostMapping("getAnalysis")
-    public  void  setAnalysis(@RequestParam Integer idSession,@RequestParam Integer value, Map<String, Object> model) {
+
+    @PostMapping("setAnalysis")
+    public void setAnalysis(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
         sessionRepo.findByIdSession(idSession).get(0).setAnalysis(value);
     }
 
-    @PostMapping("getDevelopment")
-    public  void  setDevelopment(@RequestParam Integer idSession,@RequestParam Integer value, Map<String, Object> model) {
+    @PostMapping("setDevelopment")
+    public void setDevelopment(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
         sessionRepo.findByIdSession(idSession).get(0).setDevelopment(value);
     }
-
-
 }

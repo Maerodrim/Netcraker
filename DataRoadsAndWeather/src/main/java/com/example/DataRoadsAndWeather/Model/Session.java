@@ -18,7 +18,7 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idSession", unique = true, nullable = true)
     private Integer idSession;
-    @Column(name = "nameSession", unique = false, nullable = true)
+    @Column(name = "nameSession", unique = true, nullable = true)
     private String nameSession;
     @Column(name = "dataSession", unique = false, nullable = true)
     private Integer dataSession=9;
