@@ -1,11 +1,15 @@
 package com.example.DataRoadsAndWeather.Model;
 
+import com.example.DataRoadsAndWeather.Dto.View.View;
 import com.example.DataRoadsAndWeather.Model.Enum.CardStatus;
 import com.example.DataRoadsAndWeather.Model.Enum.ColorCard;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 
+
 @Entity
+@JsonView(Card.class)
 @Table(name = "Card")
 public class Card {
     public Card() {
@@ -28,37 +32,49 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idCard", unique = true, nullable = true)
+    @JsonView(View.UI.class)
     private Integer idCard;
-   /* @ManyToOne
-    @Column(name = "idCard", unique = true, nullable = true)
-    private Session session;*/
     @Column(name = "nameCard", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private String nameCard;
     @Column(name = "dataBegSession", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer dataBegSession;
     @Column(name = "dataEndSession", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer dataEndSession;
     @Column(name = "Dev", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer development = 0;
     @Column(name = "AllDev", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer allDevelopment;
     @Column(name = "Anal", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer analysis = 0;
     @Column(name = "AllAnal", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer allAnalysis;
     @Column(name = "Test", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer testing = 0;
     @Column(name = "AllTest", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer allTesting;
     @Column(name = "Money", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Double money;
     @Column(name = "Subs", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer subs;
     @Column(name = "Color", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private ColorCard colorCard;
     @Column(name = "CardStatus", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private CardStatus status = CardStatus.Selected;
     @Column(name = "Priority", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private Integer priority;
 
 
@@ -179,4 +195,5 @@ public class Card {
     public void setSubs(Integer subs) {
         this.subs = subs;
     }
+
 }

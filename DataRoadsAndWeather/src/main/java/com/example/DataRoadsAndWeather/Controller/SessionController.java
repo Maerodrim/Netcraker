@@ -1,8 +1,12 @@
 package com.example.DataRoadsAndWeather.Controller;
 
+import com.example.DataRoadsAndWeather.Dto.View.View;
+import com.example.DataRoadsAndWeather.Model.Card;
 import com.example.DataRoadsAndWeather.Model.Session;
 import com.example.DataRoadsAndWeather.Model.Users;
 import com.example.DataRoadsAndWeather.Repo.SessionRepo;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +18,8 @@ import java.util.Set;
 public class SessionController {
     @Autowired
     private SessionRepo sessionRepo;
-
+    @Autowired
+    ObjectMapper mapper = new ObjectMapper();
     @PostMapping("addSession")
     public Integer addSession(@RequestParam String nameSession, @RequestParam Set<Users> users,
                               Map<String, Object> model) {
@@ -58,13 +63,12 @@ public class SessionController {
 
         return "Ok";
     }
-
+    @JsonView(View.UI.class)
     @GetMapping("getCard")
-    public String getCard(@RequestParam Integer idSession, Map<String, Object> model) {
+    public Set<Card> getCard(@RequestParam Integer idSession, Map<String, Object> model) {
 
-        return sessionRepo.findByIdSession(idSession).get(0).getCard().toString();
+        return sessionRepo.findByIdSession(idSession).get(0).getCard();
     }
-
     @GetMapping("getDate")
     public Integer getDate(@RequestParam Integer idSession, Map<String, Object> model) {
 
@@ -92,8 +96,10 @@ public class SessionController {
     }
 
     @PostMapping("setAnalysis")
-    public void setAnalysis(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
-        sessionRepo.findByIdSession(idSession).get(0).setAnalysis(value);
+    public Integer setAnalysis(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+       sessionRepo.findByIdSession(idSession).get(0).setAnalysis(value);
+       sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+        return sessionRepo.findByIdSession(idSession).get(0).getAnalysis();
     }
 
     @PostMapping("setDevelopment")

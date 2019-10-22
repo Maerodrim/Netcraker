@@ -1,6 +1,9 @@
 package com.example.DataRoadsAndWeather.Model;
 
 
+import com.example.DataRoadsAndWeather.Dto.View.View;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -17,22 +20,30 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idSession", unique = true, nullable = true)
+    @JsonView(View.REST.class)
     private Integer idSession;
     @Column(name = "nameSession", unique = true, nullable = true)
+    @JsonView(View.REST.class)
     private String nameSession;
     @Column(name = "dataSession", unique = false, nullable = true)
-    private Integer dataSession=9;
+    @JsonView(View.REST.class)
+    private Integer dataSession;
     @Column(name = "Dev", unique = false, nullable = true)
-    private Integer Development=2;
+    @JsonView(View.REST.class)
+    private Integer Development;
     @Column(name = "Anal", unique = false, nullable = true)
-    private Integer Analysis=3;
+    @JsonView(View.REST.class)
+    private Integer Analysis;
     @Column(name = "Test", unique = false, nullable = true)
-    private Integer Testing=2;
+    @JsonView(View.REST.class)
+    private Integer Testing;
     @OneToMany
     @Column(name = "Users", unique = false, nullable = true)
+    @JsonView(View.REST.class)
     private Set<Users> users;
     @OneToMany
     @Column(name = "Card",unique = false, nullable = true)
+    @JsonView(View.REST.class)
     private Set<Card> card;
 
     public Integer getIdSession() {
