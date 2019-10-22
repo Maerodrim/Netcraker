@@ -1,5 +1,8 @@
 package com.example.DataRoadsAndWeather.Model;
 
+import com.example.DataRoadsAndWeather.Dto.View.View;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,14 +20,18 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(View.UI.class)
     private Integer idUsers;
     @Column(name = "name", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private String name;
     @Column(name = "email", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private String email;
     @Column(name = "Password", unique = false, nullable = true)
     private String password;
     @Column(name = "position", unique = false, nullable = true)
+    @JsonView(View.UI.class)
     private String role;
   /*  @OneToMany
     @Column(name = "chat", unique = false, nullable = true)

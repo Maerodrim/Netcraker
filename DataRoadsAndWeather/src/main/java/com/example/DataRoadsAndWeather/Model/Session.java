@@ -20,30 +20,30 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idSession", unique = true, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private Integer idSession;
     @Column(name = "nameSession", unique = true, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private String nameSession;
     @Column(name = "dataSession", unique = false, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private Integer dataSession;
     @Column(name = "Dev", unique = false, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private Integer Development;
     @Column(name = "Anal", unique = false, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private Integer Analysis;
     @Column(name = "Test", unique = false, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private Integer Testing;
     @OneToMany
     @Column(name = "Users", unique = false, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private Set<Users> users;
     @OneToMany
     @Column(name = "Card",unique = false, nullable = true)
-    @JsonView(View.REST.class)
+    @JsonView(View.UI.class)
     private Set<Card> card;
 
     public Integer getIdSession() {

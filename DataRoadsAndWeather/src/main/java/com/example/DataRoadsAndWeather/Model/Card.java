@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 
 @Entity
-@JsonView(Card.class)
 @Table(name = "Card")
 public class Card {
     public Card() {

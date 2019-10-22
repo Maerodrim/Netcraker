@@ -14,6 +14,7 @@ import java.util.Map;
 public class CardController {
     @Autowired
     private CardRepo cardRepo;
+
     @GetMapping
     public String main(Map<String, Object> model) {
 
@@ -24,14 +25,14 @@ public class CardController {
         return "main";
     }
 
-    @PostMapping("/addCard")
+    @PostMapping("addCard")
     public String add(@RequestParam String nameCard, @RequestParam Integer idSession,
                       @RequestParam Integer dataSession, @RequestParam Integer development,
                       @RequestParam Integer analysis, @RequestParam Integer testing
-                      ,@RequestParam Double Money, @RequestParam ColorCard color,
-                      @RequestParam Integer priority,@RequestParam Integer subs, Map<String, Object> model) {
-       Card card = new Card(nameCard, idSession,dataSession,development,
-               analysis,testing,Money,color,priority,subs);
+            , @RequestParam Double Money, @RequestParam ColorCard color,
+                      @RequestParam Integer priority, @RequestParam Integer subs, Map<String, Object> model) {
+        Card card = new Card(nameCard, idSession, dataSession, development,
+                analysis, testing, Money, color, priority, subs);
 
         cardRepo.save(card);
 
@@ -39,58 +40,62 @@ public class CardController {
 
         model.put("card", card);
 
-        return "main";
+        return "Ok";
     }
 
-    @PostMapping("/updateAnal")
+    @PostMapping("updateAnal")
     public String updateAnal(@RequestParam Integer idCard, @RequestParam Integer anal, Map<String, Object> model) {
-        /*card.addAnalysis(anal);*/
         cardRepo.findByIdCard(idCard).get(0).addAnalysis(anal);
-        return "main";
+        cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
     }
-    @PostMapping("/updateDev")
-    public String updateDev(@RequestParam Integer idCard,@RequestParam Integer dev, Map<String, Object> model) {
-        /*card.addDevelopment(dev);
-        model.put("card", card);*/
+
+    @PostMapping("updateDev")
+    public String updateDev(@RequestParam Integer idCard, @RequestParam Integer dev, Map<String, Object> model) {
         cardRepo.findByIdCard(idCard).get(0).addDevelopment(dev);
-        return "main";
+        cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
     }
-    @PostMapping("/updateTest")
-    public String updateTest(@RequestParam Integer idCard,@RequestParam Integer test, Map<String, Object> model) {
 
+    @PostMapping("updateTest")
+    public String updateTest(@RequestParam Integer idCard, @RequestParam Integer test, Map<String, Object> model) {
         cardRepo.findByIdCard(idCard).get(0).addTesting(test);
-        return "main";
+        cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
     }
-    @PostMapping("/updateStatus")
+
+    @PostMapping("updateStatus")
     public String updateStatus(@RequestParam Integer idCard, Map<String, Object> model) {
-
         cardRepo.findByIdCard(idCard).get(0).nextCardStatus();
-        return "main";
+        cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
     }
-    @PostMapping("/updateDateBeg")
-    public String updateDateBeg(@RequestParam Integer idCard,@RequestParam Integer date, Map<String, Object> model) {
 
+    @PostMapping("updateDateBeg")
+    public String updateDateBeg(@RequestParam Integer idCard, @RequestParam Integer date, Map<String, Object> model) {
         cardRepo.findByIdCard(idCard).get(0).setDataBegSession(date);
-        return "main";
+        cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
     }
-    @PostMapping("/updateDateEnd")
-    public String updateDateEnd(@RequestParam Integer idCard,@RequestParam Integer date, Map<String, Object> model) {
 
+    @PostMapping("updateDateEnd")
+    public String updateDateEnd(@RequestParam Integer idCard, @RequestParam Integer date, Map<String, Object> model) {
         cardRepo.findByIdCard(idCard).get(0).setDataEndSession(date);
-        return "main";
+        cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
     }
 
     @PostMapping(path = "/allCard")
     public String delete() {
         cardRepo.deleteAll();
-        return "main";
+        return "OK";
     }
 
     @PostMapping("filterCard")
-    public String filter(@RequestParam Integer  filter, Map<String, Object> model) {
+    public String filter(@RequestParam Integer filter, Map<String, Object> model) {
         Iterable<Card> card;
 
-        if (filter != null && filter!=0) {
+        if (filter != null && filter != 0) {
             card = cardRepo.findByIdCard(filter);
         } else {
             card = cardRepo.findAll();

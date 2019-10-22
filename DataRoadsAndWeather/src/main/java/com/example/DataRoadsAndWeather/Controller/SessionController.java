@@ -6,7 +6,6 @@ import com.example.DataRoadsAndWeather.Model.Session;
 import com.example.DataRoadsAndWeather.Model.Users;
 import com.example.DataRoadsAndWeather.Repo.SessionRepo;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +17,6 @@ import java.util.Set;
 public class SessionController {
     @Autowired
     private SessionRepo sessionRepo;
-    @Autowired
-    ObjectMapper mapper = new ObjectMapper();
     @PostMapping("addSession")
     public Integer addSession(@RequestParam String nameSession, @RequestParam Set<Users> users,
                               Map<String, Object> model) {
@@ -64,9 +61,14 @@ public class SessionController {
         return "Ok";
     }
     @JsonView(View.UI.class)
+    @GetMapping("getSession")
+    public Session getSession(@RequestParam Integer idSession, Map<String, Object> model) {
+        return sessionRepo.findByIdSession(idSession).get(0);
+    }
+
+    @JsonView(View.UI.class)
     @GetMapping("getCard")
     public Set<Card> getCard(@RequestParam Integer idSession, Map<String, Object> model) {
-
         return sessionRepo.findByIdSession(idSession).get(0).getCard();
     }
     @GetMapping("getDate")
@@ -93,17 +95,23 @@ public class SessionController {
     @PostMapping("setTesting")
     public void setTesting(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
         sessionRepo.findByIdSession(idSession).get(0).setTesting(value);
+        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
     }
 
     @PostMapping("setAnalysis")
-    public Integer setAnalysis(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+    public void setAnalysis(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
        sessionRepo.findByIdSession(idSession).get(0).setAnalysis(value);
        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
-        return sessionRepo.findByIdSession(idSession).get(0).getAnalysis();
     }
 
     @PostMapping("setDevelopment")
     public void setDevelopment(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
         sessionRepo.findByIdSession(idSession).get(0).setDevelopment(value);
+        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+    }
+    @PostMapping("setData")
+    public void setData(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+        sessionRepo.findByIdSession(idSession).get(0).setDataSession(value);
+        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
     }
 }
