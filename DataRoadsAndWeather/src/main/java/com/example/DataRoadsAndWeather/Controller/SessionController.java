@@ -23,7 +23,7 @@ public class SessionController {
     @PostMapping("addSession")
     public Integer addSession(@RequestParam String nameSession,
                               Map<String, Object> model) {
-        Session session = new Session(nameSession, 8, 2, 3, 2);
+        Session session = new Session(nameSession, 8, 3, 2, 2);
 
         sessionRepo.save(session);
 
@@ -36,9 +36,13 @@ public class SessionController {
         for (int i = 0; i < 36; i++) {
             Card card = new Card(
                     cardRepo.findByIdCard(i).get(0).getNameCard(),
-                    cardRepo.findByIdCard(i).get(0).getDataBegSession(), 0, 0,
-                    cardRepo.findByIdCard(i).get(0).getAllDevelopment(), 0,
-                    cardRepo.findByIdCard(i).get(0).getAllAnalysis(), 0,
+                    cardRepo.findByIdCard(i).get(0).getDataBegSession(),
+                    cardRepo.findByIdCard(i).get(0).getDataEndSession(),
+                    cardRepo.findByIdCard(i).get(0).getDevelopment(),
+                    cardRepo.findByIdCard(i).get(0).getAllDevelopment(),
+                    cardRepo.findByIdCard(i).get(0).getAnalysis(),
+                    cardRepo.findByIdCard(i).get(0).getAllAnalysis(),
+                    cardRepo.findByIdCard(i).get(0).getTesting(),
                     cardRepo.findByIdCard(i).get(0).getAllTesting(),
                     cardRepo.findByIdCard(i).get(0).getMoney(),
                     cardRepo.findByIdCard(i).get(0).getSubs(),
