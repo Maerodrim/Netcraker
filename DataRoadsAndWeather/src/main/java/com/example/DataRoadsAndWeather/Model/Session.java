@@ -22,7 +22,6 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idSession", unique = true, nullable = true)
     @JsonView(View.UI.class)
     private Integer idSession;
     @Column(name = "nameSession", unique = true, nullable = true)

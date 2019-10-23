@@ -3,6 +3,7 @@ package com.example.DataRoadsAndWeather.Controller;
 
 import com.example.DataRoadsAndWeather.Dto.View.View;
 import com.example.DataRoadsAndWeather.Model.Card;
+import com.example.DataRoadsAndWeather.Model.Enum.CardStatus;
 import com.example.DataRoadsAndWeather.Model.Enum.ColorCard;
 import com.example.DataRoadsAndWeather.Repo.CardRepo;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -28,12 +29,16 @@ public class CardController {
     }
 
     @PostMapping("addCard")
-    public String add(@RequestParam String nameCard, @RequestParam Integer dataSession, @RequestParam Integer development,
-                      @RequestParam Integer analysis, @RequestParam Integer testing
+    public String addCard(@RequestParam String nameCard, @RequestParam Integer dataSession, @RequestParam Integer development,
+                          @RequestParam Integer analysis, @RequestParam Integer testing
             , @RequestParam Double Money, @RequestParam ColorCard color,
-                      @RequestParam Integer priority, @RequestParam Integer subs, Map<String, Object> model) {
-        Card card = new Card(nameCard, dataSession, development,
-                analysis, testing, Money, color, priority, subs);
+                          @RequestParam Integer priority, @RequestParam Integer subs, Map<String, Object> model) {
+        Card card = new Card(
+                nameCard,
+                dataSession, 0,
+                0, development, 0, analysis, 0, testing,
+                Money, subs, color,
+                CardStatus.Selected, priority);
 
         cardRepo.save(card);
 
@@ -43,6 +48,7 @@ public class CardController {
 
         return "Ok";
     }
+
     @JsonView(View.UI.class)
     @GetMapping("getCard")
     public Card getCard(@RequestParam Integer idCard, Map<String, Object> model) {
@@ -76,6 +82,7 @@ public class CardController {
         cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
         return "Ok";
     }
+
     @PostMapping("backStatus")
     public String backStatus(@RequestParam Integer idCard, Map<String, Object> model) {
         cardRepo.findByIdCard(idCard).get(0).backCardStatus();

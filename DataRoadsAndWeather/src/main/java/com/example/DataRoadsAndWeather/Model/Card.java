@@ -15,7 +15,7 @@ public class Card {
     }
 
     public Card(String nameCard, Integer dataBegSession, Integer allDevelopment,
-                Integer allAnalysis, Integer allTesting, Double money, ColorCard colorCard, Integer priority,Integer subs) {
+                Integer allAnalysis, Integer allTesting, Double money, ColorCard colorCard, Integer priority, Integer subs) {
         this.nameCard = nameCard;
         this.dataBegSession = dataBegSession;
         this.allDevelopment = allDevelopment;
@@ -24,15 +24,14 @@ public class Card {
         this.money = money;
         this.colorCard = colorCard;
         this.priority = priority;
-        this.subs=subs;
+        this.subs = subs;
     }
 
-    public Card(Integer idCard,String nameCard, Integer dataBegSession, Integer dataEndSession,
+    public Card(String nameCard, Integer dataBegSession, Integer dataEndSession,
                 Integer development, Integer allDevelopment, Integer analysis,
                 Integer allAnalysis, Integer testing, Integer allTesting,
                 Double money, Integer subs, ColorCard colorCard,
                 CardStatus status, Integer priority) {
-        this.idCard=idCard;
         this.nameCard = nameCard;
         this.dataBegSession = dataBegSession;
         this.dataEndSession = dataEndSession;
@@ -49,9 +48,30 @@ public class Card {
         this.priority = priority;
     }
 
+    public Card(String nameCard, Integer dataBegSession, Integer dataEndSession,
+                Integer development, Integer allDevelopment, Integer analysis,
+                Integer allAnalysis, Integer testing, Integer allTesting,
+                Double money, Integer subs, ColorCard colorCard,
+                CardStatus status, Integer priority, Integer idSession) {
+        this.nameCard = nameCard;
+        this.dataBegSession = dataBegSession;
+        this.dataEndSession = dataEndSession;
+        this.development = development;
+        this.allDevelopment = allDevelopment;
+        this.analysis = analysis;
+        this.allAnalysis = allAnalysis;
+        this.testing = testing;
+        this.allTesting = allTesting;
+        this.money = money;
+        this.subs = subs;
+        this.colorCard = colorCard;
+        this.status = status;
+        this.priority = priority;
+        this.idSession = idSession;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idCard", unique = true, nullable = true)
     @JsonView(View.UI.class)
     private Integer idCard;
     @Column(name = "nameCard", unique = false, nullable = true)
@@ -96,7 +116,17 @@ public class Card {
     @Column(name = "priority", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer priority;
+    @Column(name = "idSession", unique = false, nullable = true)
+    @JsonView(View.UI.class)
+    private Integer idSession;
 
+    public Integer getIdSession() {
+        return idSession;
+    }
+
+    public void setIdSession(Integer idSession) {
+        this.idSession = idSession;
+    }
 
     public void setColorCard(ColorCard colorCard) {
         this.colorCard = colorCard;
@@ -142,6 +172,7 @@ public class Card {
     public void nextCardStatus() {
         this.status = CardStatus.values()[status.ordinal() + 1];
     }
+
     public void backCardStatus() {
         this.status = CardStatus.values()[status.ordinal() - 1];
     }
