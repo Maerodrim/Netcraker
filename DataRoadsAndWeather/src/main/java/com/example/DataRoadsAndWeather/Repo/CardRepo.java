@@ -10,4 +10,5 @@ import java.util.List;
 @Table(name = "Card")
 public interface CardRepo extends CrudRepository<Card, Long> {
     List<Card> findByIdCard(Integer IdCard);
+    List<Card> findAllByIdCardNotNull();
 }

@@ -3,7 +3,7 @@ package com.example.DataRoadsAndWeather.Controller;
 import com.example.DataRoadsAndWeather.Dto.View.View;
 import com.example.DataRoadsAndWeather.Model.Card;
 import com.example.DataRoadsAndWeather.Model.Session;
-import com.example.DataRoadsAndWeather.Model.Users;
+import com.example.DataRoadsAndWeather.Repo.CardRepo;
 import com.example.DataRoadsAndWeather.Repo.SessionRepo;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,12 @@ import java.util.Set;
 public class SessionController {
     @Autowired
     private SessionRepo sessionRepo;
+    @Autowired
+    private CardRepo cardRepo;
     @PostMapping("addSession")
-    public Integer addSession(@RequestParam String nameSession, @RequestParam Set<Users> users,
+    public Integer addSession(@RequestParam String nameSession,
                               Map<String, Object> model) {
-        Session session = new Session(nameSession, users);
+        Session session = new Session(nameSession, 8,2,3,2);
 
         sessionRepo.save(session);
 
@@ -30,7 +32,24 @@ public class SessionController {
     @PostMapping("addNullPackCard")
     public String addNullPackSession(@RequestParam Integer idSession,
                                      Map<String, Object> model) {
-        sessionRepo.findByIdSession(idSession).get(0).setCard(sessionRepo.findByIdSession(0).get(0).getCard());
+        for(int i=0;i<36;i++){
+            Card card = new Card(
+                    cardRepo.findAllByIdCardNotNull().size(),
+                    cardRepo.findByIdCard(i).get(0).getNameCard(),
+                    cardRepo.findByIdCard(i).get(0).getDataBegSession(),0,0,
+                    cardRepo.findByIdCard(i).get(0).getAllDevelopment(),0,
+                    cardRepo.findByIdCard(i).get(0).getAllAnalysis(),0,
+                    cardRepo.findByIdCard(i).get(0).getAllTesting(),
+                    cardRepo.findByIdCard(i).get(0).getMoney(),
+                    cardRepo.findByIdCard(i).get(0).getSubs(),
+                    cardRepo.findByIdCard(i).get(0).getColorCard(),
+                    cardRepo.findByIdCard(i).get(0).getStatus(),
+                    cardRepo.findByIdCard(i).get(0).getPriority());
+            cardRepo.save(card);
+        sessionRepo.findByIdSession(idSession).get(0).addCard(card);
+        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+            }
+
         return "Ok";
     }
 
@@ -79,39 +98,43 @@ public class SessionController {
 
     @GetMapping("getAnalysis")
     public Integer getAnalysis(@RequestParam Integer idSession, Map<String, Object> model) {
-        return sessionRepo.findByIdSession(idSession).get(0).getAnalysis();
+        return sessionRepo.findByIdSession(idSession).get(0).getAnal();
     }
 
     @GetMapping("getDevelopment")
     public Integer getDevelopment(@RequestParam Integer idSession, Map<String, Object> model) {
-        return sessionRepo.findByIdSession(idSession).get(0).getDevelopment();
+        return sessionRepo.findByIdSession(idSession).get(0).getDev();
     }
 
     @GetMapping("getTesting")
     public Integer getTesting(@RequestParam Integer idSession, Map<String, Object> model) {
-        return sessionRepo.findByIdSession(idSession).get(0).getTesting();
+        return sessionRepo.findByIdSession(idSession).get(0).getTest();
     }
 
     @PostMapping("setTesting")
-    public void setTesting(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
-        sessionRepo.findByIdSession(idSession).get(0).setTesting(value);
+    public String setTesting(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+        sessionRepo.findByIdSession(idSession).get(0).setTest(value);
         sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+        return "Ok";
     }
 
     @PostMapping("setAnalysis")
-    public void setAnalysis(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
-       sessionRepo.findByIdSession(idSession).get(0).setAnalysis(value);
+    public String setAnalysis(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+       sessionRepo.findByIdSession(idSession).get(0).setAnal(value);
        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+        return "Ok";
     }
 
     @PostMapping("setDevelopment")
-    public void setDevelopment(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
-        sessionRepo.findByIdSession(idSession).get(0).setDevelopment(value);
+    public String setDevelopment(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+        sessionRepo.findByIdSession(idSession).get(0).setDev(value);
         sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+        return "Ok";
     }
     @PostMapping("setData")
-    public void setData(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
+    public String setData(@RequestParam Integer idSession, @RequestParam Integer value, Map<String, Object> model) {
         sessionRepo.findByIdSession(idSession).get(0).setDataSession(value);
         sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+        return "Ok";
     }
 }

@@ -1,9 +1,11 @@
 package com.example.DataRoadsAndWeather.Controller;
 
 
+import com.example.DataRoadsAndWeather.Dto.View.View;
 import com.example.DataRoadsAndWeather.Model.Card;
 import com.example.DataRoadsAndWeather.Model.Enum.ColorCard;
 import com.example.DataRoadsAndWeather.Repo.CardRepo;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +28,11 @@ public class CardController {
     }
 
     @PostMapping("addCard")
-    public String add(@RequestParam String nameCard, @RequestParam Integer idSession,
-                      @RequestParam Integer dataSession, @RequestParam Integer development,
+    public String add(@RequestParam String nameCard, @RequestParam Integer dataSession, @RequestParam Integer development,
                       @RequestParam Integer analysis, @RequestParam Integer testing
             , @RequestParam Double Money, @RequestParam ColorCard color,
                       @RequestParam Integer priority, @RequestParam Integer subs, Map<String, Object> model) {
-        Card card = new Card(nameCard, idSession, dataSession, development,
+        Card card = new Card(nameCard, dataSession, development,
                 analysis, testing, Money, color, priority, subs);
 
         cardRepo.save(card);
@@ -41,6 +42,11 @@ public class CardController {
         model.put("card", card);
 
         return "Ok";
+    }
+    @JsonView(View.UI.class)
+    @GetMapping("getCard")
+    public Card getCard(@RequestParam Integer idCard, Map<String, Object> model) {
+        return cardRepo.findByIdCard(idCard).get(0);
     }
 
     @PostMapping("updateAnal")
@@ -67,6 +73,12 @@ public class CardController {
     @PostMapping("updateStatus")
     public String updateStatus(@RequestParam Integer idCard, Map<String, Object> model) {
         cardRepo.findByIdCard(idCard).get(0).nextCardStatus();
+        cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
+    }
+    @PostMapping("backStatus")
+    public String backStatus(@RequestParam Integer idCard, Map<String, Object> model) {
+        cardRepo.findByIdCard(idCard).get(0).backCardStatus();
         cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
         return "Ok";
     }

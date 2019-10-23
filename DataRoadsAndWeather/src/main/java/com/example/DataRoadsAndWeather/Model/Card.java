@@ -14,9 +14,8 @@ public class Card {
     public Card() {
     }
 
-    public Card(String nameCard, Integer idSession, Integer dataBegSession, Integer allDevelopment,
+    public Card(String nameCard, Integer dataBegSession, Integer allDevelopment,
                 Integer allAnalysis, Integer allTesting, Double money, ColorCard colorCard, Integer priority,Integer subs) {
-       // this.session=session;
         this.nameCard = nameCard;
         this.dataBegSession = dataBegSession;
         this.allDevelopment = allDevelopment;
@@ -26,6 +25,28 @@ public class Card {
         this.colorCard = colorCard;
         this.priority = priority;
         this.subs=subs;
+    }
+
+    public Card(Integer idCard,String nameCard, Integer dataBegSession, Integer dataEndSession,
+                Integer development, Integer allDevelopment, Integer analysis,
+                Integer allAnalysis, Integer testing, Integer allTesting,
+                Double money, Integer subs, ColorCard colorCard,
+                CardStatus status, Integer priority) {
+        this.idCard=idCard;
+        this.nameCard = nameCard;
+        this.dataBegSession = dataBegSession;
+        this.dataEndSession = dataEndSession;
+        this.development = development;
+        this.allDevelopment = allDevelopment;
+        this.analysis = analysis;
+        this.allAnalysis = allAnalysis;
+        this.testing = testing;
+        this.allTesting = allTesting;
+        this.money = money;
+        this.subs = subs;
+        this.colorCard = colorCard;
+        this.status = status;
+        this.priority = priority;
     }
 
     @Id
@@ -42,37 +63,37 @@ public class Card {
     @Column(name = "dataEndSession", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer dataEndSession;
-    @Column(name = "Dev", unique = false, nullable = true)
+    @Column(name = "development", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer development = 0;
-    @Column(name = "AllDev", unique = false, nullable = true)
+    @Column(name = "allDevelopment", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer allDevelopment;
-    @Column(name = "Anal", unique = false, nullable = true)
+    @Column(name = "analysis", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer analysis = 0;
-    @Column(name = "AllAnal", unique = false, nullable = true)
+    @Column(name = "allAnalysis", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer allAnalysis;
-    @Column(name = "Test", unique = false, nullable = true)
+    @Column(name = "testing", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer testing = 0;
-    @Column(name = "AllTest", unique = false, nullable = true)
+    @Column(name = "allTesting", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer allTesting;
-    @Column(name = "Money", unique = false, nullable = true)
+    @Column(name = "money", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Double money;
-    @Column(name = "Subs", unique = false, nullable = true)
+    @Column(name = "subs", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer subs;
-    @Column(name = "Color", unique = false, nullable = true)
+    @Column(name = "colorCard", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private ColorCard colorCard;
     @Column(name = "CardStatus", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private CardStatus status = CardStatus.Selected;
-    @Column(name = "Priority", unique = false, nullable = true)
+    @Column(name = "priority", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private Integer priority;
 
@@ -121,7 +142,9 @@ public class Card {
     public void nextCardStatus() {
         this.status = CardStatus.values()[status.ordinal() + 1];
     }
-
+    public void backCardStatus() {
+        this.status = CardStatus.values()[status.ordinal() - 1];
+    }
 
     public ColorCard getColorCard() {
         return colorCard;

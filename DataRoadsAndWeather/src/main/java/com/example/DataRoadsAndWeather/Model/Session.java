@@ -12,9 +12,12 @@ import java.util.Set;
 public class Session {
     public Session(){}
 
-    public Session(String nameSession, Set<Users> users) {
+    public Session(String nameSession, Integer dataSession, Integer dev, Integer anal, Integer test) {
         this.nameSession = nameSession;
-        this.users = users;
+        this.dataSession = dataSession;
+        this.Dev = dev;
+        Anal = anal;
+        Test = test;
     }
 
     @Id
@@ -30,13 +33,13 @@ public class Session {
     private Integer dataSession;
     @Column(name = "Dev", unique = false, nullable = true)
     @JsonView(View.UI.class)
-    private Integer Development;
+    private Integer Dev;
     @Column(name = "Anal", unique = false, nullable = true)
     @JsonView(View.UI.class)
-    private Integer Analysis;
+    private Integer Anal;
     @Column(name = "Test", unique = false, nullable = true)
     @JsonView(View.UI.class)
-    private Integer Testing;
+    private Integer Test;
     @OneToMany
     @Column(name = "Users", unique = false, nullable = true)
     @JsonView(View.UI.class)
@@ -90,28 +93,28 @@ public class Session {
         return this.users.contains(users);
     }
 
-    public Integer getDevelopment() {
-        return Development;
+    public Integer getDev() {
+        return Dev;
     }
 
-    public void setDevelopment(Integer development) {
-        Development = development;
+    public void setDev(Integer dev) {
+        this.Dev = dev;
     }
 
-    public Integer getAnalysis() {
-        return Analysis;
+    public Integer getAnal() {
+        return Anal;
     }
 
-    public void setAnalysis(Integer analysis) {
-        Analysis = analysis;
+    public void setAnal(Integer anal) {
+        Anal = anal;
     }
 
-    public Integer getTesting() {
-        return Testing;
+    public Integer getTest() {
+        return Test;
     }
 
-    public void setTesting(Integer testing) {
-        Testing = testing;
+    public void setTest(Integer test) {
+        Test = test;
     }
 
     public Set<Users> getUsers() {
