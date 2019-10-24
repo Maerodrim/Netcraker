@@ -21,20 +21,21 @@ public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.UI.class)
+    @JsonView(View.USERS.class)
     private Integer idUsers;
     @Column(name = "name", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.USERS.class)
     private String name;
     @Column(name = "email", unique = true, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.USERS.class)
     private String email;
     @Column(name = "Password", unique = false, nullable = true)
     private String password;
     @Column(name = "position", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.USERS.class)
     private String role;
-    @OneToMany
+    @ManyToMany
+    @JsonView(View.SESSION.class)
     @Column(name = "Session", unique = false, nullable = true)
     private Set<Session> Session;
 
@@ -74,7 +75,7 @@ public class Users {
         this.password = password;
     }
 
-    public Set<Session> getIdSession() {
+    public Set<Session> getSession() {
         return Session;
     }
 

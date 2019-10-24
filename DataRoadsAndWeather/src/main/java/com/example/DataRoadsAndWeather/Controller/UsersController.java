@@ -1,12 +1,15 @@
 package com.example.DataRoadsAndWeather.Controller;
 
 
+import com.example.DataRoadsAndWeather.Dto.View.View;
 import com.example.DataRoadsAndWeather.Model.Users;
 import com.example.DataRoadsAndWeather.Repo.UsersRepo;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("UsersController")
@@ -25,14 +28,26 @@ public class UsersController {
 
         return "url:/MessageController/main";
     }
-    @PostMapping("/getPassword")
+    @GetMapping("/getPassword")
     public Boolean getPassword(@RequestParam String email,@RequestParam String password, Map<String, Object> model) {
 
         return usersRepo.findByEmail(email).get(0).getPassword().toString().equals(password);
     }
-    @PostMapping("/getRole")
+    @GetMapping("/getRole")
     public String getRole(@RequestParam String email, Map<String, Object> model) {
 
         return usersRepo.findByEmail(email).get(0).getRole();
+    }
+    @JsonView(View.SESSION.class)
+    @GetMapping("/getSession")
+    public Set getSession(@RequestParam String email, Map<String, Object> model) {
+
+        return usersRepo.findByEmail(email).get(0).getSession();
+    }
+    @JsonView(View.USERS.class)
+    @GetMapping("/getUsers")
+    public Users getUsers(@RequestParam String email, Map<String, Object> model) {
+
+        return usersRepo.findByEmail(email).get(0);
     }
 }

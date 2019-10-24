@@ -72,52 +72,52 @@ public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer idCard;
     @Column(name = "nameCard", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private String nameCard;
     @Column(name = "dataBegSession", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer dataBegSession;
     @Column(name = "dataEndSession", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer dataEndSession;
     @Column(name = "development", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer development = 0;
     @Column(name = "allDevelopment", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer allDevelopment;
     @Column(name = "analysis", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer analysis = 0;
     @Column(name = "allAnalysis", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer allAnalysis;
     @Column(name = "testing", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer testing = 0;
     @Column(name = "allTesting", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer allTesting;
     @Column(name = "money", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Double money;
     @Column(name = "subs", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer subs;
     @Column(name = "colorCard", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private ColorCard colorCard;
     @Column(name = "CardStatus", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private CardStatus status = CardStatus.Selected;
     @Column(name = "priority", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer priority;
     @Column(name = "idSession", unique = false, nullable = true)
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     private Integer idSession;
 
     public Integer getIdSession() {

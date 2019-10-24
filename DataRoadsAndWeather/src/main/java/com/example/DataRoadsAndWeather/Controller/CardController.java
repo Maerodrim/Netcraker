@@ -49,7 +49,7 @@ public class CardController {
         return "Ok";
     }
 
-    @JsonView(View.UI.class)
+    @JsonView(View.SESSION.class)
     @GetMapping("getCard")
     public Card getCard(@RequestParam Integer idCard, Map<String, Object> model) {
         return cardRepo.findByIdCard(idCard).get(0);

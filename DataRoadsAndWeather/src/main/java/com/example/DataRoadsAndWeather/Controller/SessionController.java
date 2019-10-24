@@ -99,13 +99,13 @@ public class SessionController {
         return "Ok";
     }
 
-    @JsonView(View.UI.class)
+    @JsonView(View.SESSION.class)
     @GetMapping("getSession")
     public Session getSession(@RequestParam Integer idSession, Map<String, Object> model) {
         return sessionRepo.findByIdSession(idSession).get(0);
     }
 
-    @JsonView(View.UI.class)
+    @JsonView(View.CARD.class)
     @GetMapping("getCard")
     public Set<Card> getCard(@RequestParam Integer idSession, Map<String, Object> model) {
         return sessionRepo.findByIdSession(idSession).get(0).getCard();
