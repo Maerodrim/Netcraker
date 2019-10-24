@@ -5,6 +5,7 @@ import com.example.DataRoadsAndWeather.Model.Card;
 import com.example.DataRoadsAndWeather.Model.Session;
 import com.example.DataRoadsAndWeather.Repo.CardRepo;
 import com.example.DataRoadsAndWeather.Repo.SessionRepo;
+import com.example.DataRoadsAndWeather.Repo.UsersRepo;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ public class SessionController {
     private SessionRepo sessionRepo;
     @Autowired
     private CardRepo cardRepo;
+    @Autowired
+    private UsersRepo usersRepo;
 
     @PostMapping("addSession")
     public Integer addSession(@RequestParam String nameSession,
@@ -30,9 +33,21 @@ public class SessionController {
         return sessionRepo.findByNameSession(nameSession).get(0).getIdSession();
     }
 
+    @PostMapping("addUsers")
+    public String addUsers(@RequestParam Integer idSession, @RequestParam String email,
+                                  Map<String, Object> model) {
+
+        sessionRepo.findByIdSession(idSession).get(0).addUsers(usersRepo.findByEmail(email).get(0));
+        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+        usersRepo.findByEmail(email).get(0).addSession(sessionRepo.findByIdSession(idSession).get(0));
+        usersRepo.save(usersRepo.findByEmail(email).get(0));
+
+        return"Ok";
+}
+
     @PostMapping("addNullPackCard")
     public String addNullPackCard(@RequestParam Integer idSession,
-                                     Map<String, Object> model) {
+                                  Map<String, Object> model) {
         for (int i = 0; i < 36; i++) {
             Card card = new Card(
                     cardRepo.findByIdCard(i).get(0).getNameCard(),

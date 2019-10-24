@@ -4,6 +4,7 @@ import com.example.DataRoadsAndWeather.Dto.View.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -25,7 +26,7 @@ public class Users {
     @Column(name = "name", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private String name;
-    @Column(name = "email", unique = false, nullable = true)
+    @Column(name = "email", unique = true, nullable = true)
     @JsonView(View.UI.class)
     private String email;
     @Column(name = "Password", unique = false, nullable = true)
@@ -33,12 +34,9 @@ public class Users {
     @Column(name = "position", unique = false, nullable = true)
     @JsonView(View.UI.class)
     private String role;
-  /*  @OneToMany
-    @Column(name = "chat", unique = false, nullable = true)
-    private Set<Chat> chat;
     @OneToMany
-    @Column(name = "idSession", unique = false, nullable = true)
-    private Set<Integer> idSession;*/
+    @Column(name = "Session", unique = false, nullable = true)
+    private Set<Session> Session;
 
     public Integer getIdUsers() {
         return idUsers;
@@ -75,32 +73,21 @@ public class Users {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
-    public Set<Integer> getIdSession() {
-        return idSession;
+
+    public Set<Session> getIdSession() {
+        return Session;
     }
 
-    public void addIdSession(Integer idSession) {
-        this.idSession.add(idSession);
+    public void addSession(Session session) {
+        this.Session.add(session);
     }
 
-    public void removeIdSession(Integer idSession) {
-        this.idSession.remove(idSession);
+    public void removeSession(Session session) {
+        this.Session.remove(session);
     }
 
-    public boolean testIdSession(Integer idSession) {
-        return this.idSession.contains(idSession);
+    public boolean testSession(Session session) {
+        return this.Session.contains(session);
     }
 
-    public void addChat(Chat chat) {
-        this.chat.add(chat);
-    }
-
-    public void removeChat(Chat chat) {
-        this.chat.remove(chat);
-    }
-
-    public boolean testChat(Chat chat) {
-        return this.chat.contains(chat);
-    }*/
 }
