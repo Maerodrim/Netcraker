@@ -85,19 +85,19 @@ public class Card {
     private Integer dataEndSession;
     @Column(name = "development", unique = false, nullable = true)
     @JsonView(View.CARD.class)
-    private Integer development = 0;
+    private Integer development;
     @Column(name = "allDevelopment", unique = false, nullable = true)
     @JsonView(View.CARD.class)
     private Integer allDevelopment;
     @Column(name = "analysis", unique = false, nullable = true)
     @JsonView(View.CARD.class)
-    private Integer analysis = 0;
+    private Integer analysis;
     @Column(name = "allAnalysis", unique = false, nullable = true)
     @JsonView(View.CARD.class)
     private Integer allAnalysis;
     @Column(name = "testing", unique = false, nullable = true)
     @JsonView(View.CARD.class)
-    private Integer testing = 0;
+    private Integer testing;
     @Column(name = "allTesting", unique = false, nullable = true)
     @JsonView(View.CARD.class)
     private Integer allTesting;
