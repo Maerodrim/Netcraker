@@ -24,7 +24,6 @@ public class SessionController {
     @Autowired
     private UsersRepo usersRepo;
 
-    @PostMapping("addSession")
     public Integer addSession(@RequestParam String nameSession) {
         Session session = new Session(nameSession, 8, 3, 2, 2);
 

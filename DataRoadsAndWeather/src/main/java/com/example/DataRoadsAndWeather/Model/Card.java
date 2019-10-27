@@ -161,6 +161,23 @@ public class Card {
         }
     }
 
+    public void updateCard(Card card){
+        this.nameCard = card.nameCard;
+        this.dataBegSession = card.dataBegSession;
+        this.dataEndSession = card.dataEndSession;
+        this.development = card.development;
+        this.allDevelopment = card.allDevelopment;
+        this.analysis = card.analysis;
+        this.allAnalysis = card.allAnalysis;
+        this.testing = card.testing;
+        this.allTesting = card.allTesting;
+        this.money = card.money;
+        this.subs = card.subs;
+        this.colorCard = card.colorCard;
+        this.status = card.status;
+        this.priority = card.priority;
+        this.idSession = card.idSession;}
+
     public void setDataBegSession(Integer dataBegSession) {
         this.dataBegSession = dataBegSession;
     }

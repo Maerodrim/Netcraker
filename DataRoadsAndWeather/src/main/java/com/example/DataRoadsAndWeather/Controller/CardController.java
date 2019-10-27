@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("CardController")
@@ -22,16 +22,6 @@ public class CardController {
     private CardRepo cardRepo;
     @Autowired
     private SessionRepo sessionRepo;
-
-    @GetMapping
-    public String main(Map<String, Object> model) {
-
-        Iterable<Card> cards = cardRepo.findAll();
-
-        model.put("card", cards);
-
-        return "main";
-    }
 
     @PostMapping("addCard")
     public String addCard(@RequestParam Integer idSession, @RequestParam String nameCard, @RequestParam Integer dataSession, @RequestParam Integer development,
@@ -108,6 +98,18 @@ public class CardController {
     @DeleteMapping(path = "DeleteCard")
     public String deleteCard(@RequestParam Integer idCard) {
         cardRepo.delete(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
+    }
+
+    @JsonView(View.CARD.class)
+    @PostMapping("updateCards")
+    public String updateCards(@RequestParam List<Card> card) {
+
+        for (int i = 0; i < card.size(); i++) {
+            cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).updateCard(card.get(i));
+            cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
+        }
+        log.info("Изменен набор");
         return "Ok";
     }
 }

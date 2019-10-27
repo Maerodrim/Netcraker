@@ -11,4 +11,5 @@ import java.util.List;
 public interface CardRepo extends CrudRepository<Card, Long> {
     List<Card> findByIdCard(Integer IdCard);
     List<Card> findAllByIdCardNotNull();
+
 }
