@@ -31,13 +31,25 @@ public class Users {
     private String email;
     @Column(name = "Password", unique = false, nullable = true)
     private String password;
-    @Column(name = "position", unique = false, nullable = true)
+    @Column(name = "position", unique = false, nullable = false)
     @JsonView(View.USERS.class)
     private String role;
-    @ManyToMany
-    @JsonView(View.SESSION.class)
-    @Column(name = "Session", unique = false, nullable = true)
-    private Set<Session> Session;
+    @OneToMany
+    @Column(name = "Card",unique = false, nullable = false)
+    @JsonView(View.CARD.class)
+    private Set<Card> card;
+
+    public void addCard(Card card) {
+        this.card.add(card);
+    }
+
+    public void removeCard(Card card) {
+        this.card.remove(card);
+    }
+
+    public boolean testCard(Card card) {
+        return this.card.contains(card);
+    }
 
     public Integer getIdUsers() {
         return idUsers;
@@ -75,20 +87,12 @@ public class Users {
         this.password = password;
     }
 
-    public Set<Session> getSession() {
-        return Session;
+    public Set<Card> getCard() {
+        return card;
     }
 
-    public void addSession(Session session) {
-        this.Session.add(session);
-    }
-
-    public void removeSession(Session session) {
-        this.Session.remove(session);
-    }
-
-    public boolean testSession(Session session) {
-        return this.Session.contains(session);
+    public void setCard(Set<Card> card) {
+        this.card = card;
     }
 
 }

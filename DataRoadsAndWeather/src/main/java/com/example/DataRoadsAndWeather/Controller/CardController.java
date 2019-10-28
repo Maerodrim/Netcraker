@@ -6,13 +6,16 @@ import com.example.DataRoadsAndWeather.Model.Card;
 import com.example.DataRoadsAndWeather.Model.Enum.CardStatus;
 import com.example.DataRoadsAndWeather.Model.Enum.ColorCard;
 import com.example.DataRoadsAndWeather.Repo.CardRepo;
-import com.example.DataRoadsAndWeather.Repo.SessionRepo;
+import com.example.DataRoadsAndWeather.Repo.NullPackCardRepo;
+import com.example.DataRoadsAndWeather.Repo.UsersRepo;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("CardController")
@@ -21,29 +24,71 @@ public class CardController {
     @Autowired
     private CardRepo cardRepo;
     @Autowired
-    private SessionRepo sessionRepo;
+    private NullPackCardRepo nullPackCardRepo;
+    @Autowired
+    private UsersRepo usersRepo;
 
     @PostMapping("addCard")
-    public String addCard(@RequestParam Integer idSession, @RequestParam String nameCard, @RequestParam Integer dataSession, @RequestParam Integer development,
-                          @RequestParam Integer analysis, @RequestParam Integer testing
-            , @RequestParam Double Money, @RequestParam Integer color,
+    public String addCard(@RequestParam String email, @RequestParam String nameCard,
+                          @RequestParam Integer dataSession, @RequestParam Integer development,
+                          @RequestParam Integer analysis, @RequestParam Integer testing,
+                          @RequestParam Double Money, @RequestParam Integer color,
                           @RequestParam Integer priority, @RequestParam Integer subs) {
         Card card = new Card(
                 nameCard,
                 dataSession, 0,
                 0, development, 0, analysis, 0, testing,
                 Money, subs, ColorCard.values()[color],
-                CardStatus.Selected, priority, idSession);
-        sessionRepo.findByIdSession(idSession).get(0).addCard(card);
+                CardStatus.Selected, priority, email);
+        usersRepo.findByEmail(email).get(0).addCard(card);
         cardRepo.save(card);
-        sessionRepo.save(sessionRepo.findByIdSession(idSession).get(0));
+        usersRepo.save(usersRepo.findByEmail(email).get(0));
         return "Ok";
     }
 
-    @JsonView(View.SESSION.class)
+    @PostMapping("addNullPackCard")
+    public String addNullPackCard(@RequestParam String email) {
+        for (int i = 0; i < 36; i++) {
+            Card card = new Card(
+                    nullPackCardRepo.findByIdCard(i).get(0).getNameCard(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getDataBegSession(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getDataEndSession(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getDevelopment(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getAllDevelopment(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getAnalysis(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getAllAnalysis(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getTesting(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getAllTesting(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getMoney(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getSubs(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getColorCard(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getStatus(),
+                    nullPackCardRepo.findByIdCard(i).get(0).getPriority(),
+                    email);
+            usersRepo.findByEmail(email).get(0).addCard(card);
+            cardRepo.save(card);
+            usersRepo.save(usersRepo.findByEmail(email).get(0));
+        }
+        log.info("Добавлен нулевой набор");
+        return "Ok";
+    }
+
+    @JsonView(View.CARD.class)
     @GetMapping("getCard")
     public Card getCard(@RequestParam Integer idCard) {
         return cardRepo.findByIdCard(idCard).get(0);
+    }
+
+    @JsonView(View.CARD.class)
+    @GetMapping("getCardByStatus")
+    public List<Card> getCardByStatus(@RequestParam String email, @RequestParam Integer status) {
+        return cardRepo.findByStatusAndEmail(CardStatus.values()[status], email);
+    }
+
+    @JsonView(View.CARD.class)
+    @GetMapping("getAllCard")
+    public Set<Card> getAllCard(@RequestParam String email) {
+        return usersRepo.findByEmail(email).get(0).getCard();
     }
 
     @PostMapping("updateAnal")
@@ -101,9 +146,15 @@ public class CardController {
         return "Ok";
     }
 
+    @DeleteMapping(path = "/allDeleteCardUsers")
+    public String delete(@RequestParam String email) {
+        cardRepo.deleteAll(usersRepo.findByEmail(email).get(0).getCard());
+        return "Ok";
+    }
+
     @JsonView(View.CARD.class)
     @PostMapping("updateCards")
-    public String updateCards(@RequestParam List<Card> card) {
+    public String updateCards(@RequestParam ArrayList<Card> card) {
 
         for (int i = 0; i < card.size(); i++) {
             cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).updateCard(card.get(i));
@@ -112,4 +163,35 @@ public class CardController {
         log.info("Изменен набор");
         return "Ok";
     }
+
+    @JsonView(View.CARD.class)
+    @PostMapping("updateArrayAnal")
+    public String updateArrayAnal(@RequestParam ArrayList<Integer> idCard, @RequestParam ArrayList<Integer> anal) {
+        for (int i = 0; i < idCard.size(); i++) {
+            cardRepo.findByIdCard(idCard.get(i)).get(0).addAnalysis(anal.get(i));
+            cardRepo.save(cardRepo.findByIdCard(idCard.get(i)).get(0));
+        }
+        return "Ok";
+    }
+
+    @JsonView(View.CARD.class)
+    @PostMapping("updateArrayDev")
+    public String updateArrayDev(@RequestParam ArrayList<Integer> idCard, @RequestParam ArrayList<Integer> dev) {
+        for (int i = 0; i < idCard.size(); i++) {
+            cardRepo.findByIdCard(idCard.get(i)).get(0).addDevelopment(dev.get(i));
+            cardRepo.save(cardRepo.findByIdCard(idCard.get(i)).get(0));
+        }
+        return "Ok";
+    }
+
+    @JsonView(View.CARD.class)
+    @PostMapping("updateArrayTest")
+    public String updateArrayTest(@RequestParam ArrayList<Integer> idCard, @RequestParam ArrayList<Integer> test) {
+        for (int i = 0; i < idCard.size(); i++) {
+            cardRepo.findByIdCard(idCard.get(i)).get(0).addTesting(test.get(i));
+            cardRepo.save(cardRepo.findByIdCard(idCard.get(i)).get(0));
+        }
+        return "Ok";
+    }
+
 }

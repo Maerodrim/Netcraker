@@ -1,6 +1,7 @@
 package com.example.DataRoadsAndWeather.Repo;
 
 import com.example.DataRoadsAndWeather.Model.Card;
+import com.example.DataRoadsAndWeather.Model.Enum.CardStatus;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +12,5 @@ import java.util.List;
 public interface CardRepo extends CrudRepository<Card, Long> {
     List<Card> findByIdCard(Integer IdCard);
     List<Card> findAllByIdCardNotNull();
-
+    List<Card> findByStatusAndEmail(CardStatus cardStatus,String email);
 }

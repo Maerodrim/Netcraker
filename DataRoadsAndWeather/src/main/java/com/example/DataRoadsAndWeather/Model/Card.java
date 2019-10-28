@@ -52,7 +52,7 @@ public class Card {
                 Integer development, Integer allDevelopment, Integer analysis,
                 Integer allAnalysis, Integer testing, Integer allTesting,
                 Double money, Integer subs, ColorCard colorCard,
-                CardStatus status, Integer priority, Integer idSession) {
+                CardStatus status, Integer priority, String email) {
         this.nameCard = nameCard;
         this.dataBegSession = dataBegSession;
         this.dataEndSession = dataEndSession;
@@ -67,7 +67,7 @@ public class Card {
         this.colorCard = colorCard;
         this.status = status;
         this.priority = priority;
-        this.idSession = idSession;
+        this.email = email;
     }
 
     @Id
@@ -116,16 +116,16 @@ public class Card {
     @Column(name = "priority", unique = false, nullable = true)
     @JsonView(View.CARD.class)
     private Integer priority;
-    @Column(name = "idSession", unique = false, nullable = true)
+    @Column(name = "email", unique = false, nullable = true)
     @JsonView(View.CARD.class)
-    private Integer idSession;
+    private String email;
 
-    public Integer getIdSession() {
-        return idSession;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIdSession(Integer idSession) {
-        this.idSession = idSession;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setColorCard(ColorCard colorCard) {
@@ -176,7 +176,7 @@ public class Card {
         this.colorCard = card.colorCard;
         this.status = card.status;
         this.priority = card.priority;
-        this.idSession = card.idSession;}
+        this.email = card.email;}
 
     public void setDataBegSession(Integer dataBegSession) {
         this.dataBegSession = dataBegSession;

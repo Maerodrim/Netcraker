@@ -9,8 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RestController
 @RequestMapping("UsersController")
 @Log4j2
@@ -38,13 +36,6 @@ public class UsersController {
     public String getRole(@RequestParam String email) {
 
         return usersRepo.findByEmail(email).get(0).getRole();
-    }
-
-    @JsonView(View.SESSION.class)
-    @GetMapping("/getSession")
-    public Set getSession(@RequestParam String email) {
-
-        return usersRepo.findByEmail(email).get(0).getSession();
     }
 
     @JsonView(View.USERS.class)
