@@ -160,7 +160,7 @@ public class CardController {
             cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).updateCard(card.get(i));
             cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
         }
-        log.info("Изменен набор");
+        log.info("updateCards");
         return "Ok";
     }
 

@@ -17,6 +17,7 @@ public class Users {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.Day=8;
     }
 
     @Id
@@ -38,6 +39,21 @@ public class Users {
     @Column(name = "Card",unique = false, nullable = false)
     @JsonView(View.CARD.class)
     private Set<Card> card;
+    @Column(name = "Day", unique = false, nullable = false)
+    @JsonView(View.USERS.class)
+    private Integer Day;
+
+    public Integer getDay() {
+        return Day;
+    }
+
+    public void setDay(Integer day) {
+        Day = day;
+    }
+
+    public void newDay() {
+       this.Day += 1;
+    }
 
     public void addCard(Card card) {
         this.card.add(card);
