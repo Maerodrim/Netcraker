@@ -3,9 +3,11 @@ package com.example.DataRoadsAndWeather.Controller;
 
 import com.example.DataRoadsAndWeather.Dto.View.View;
 import com.example.DataRoadsAndWeather.Model.Card;
+import com.example.DataRoadsAndWeather.Model.Cube;
 import com.example.DataRoadsAndWeather.Model.Enum.CardStatus;
 import com.example.DataRoadsAndWeather.Model.Enum.ColorCard;
 import com.example.DataRoadsAndWeather.Repo.CardRepo;
+import com.example.DataRoadsAndWeather.Repo.CubeRepo;
 import com.example.DataRoadsAndWeather.Repo.NullPackCardRepo;
 import com.example.DataRoadsAndWeather.Repo.UsersRepo;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -15,18 +17,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @RestController
 @RequestMapping("CardController")
 @Log4j2
-public class CardController {
+public class CardController{
     @Autowired
     private CardRepo cardRepo;
     @Autowired
     private NullPackCardRepo nullPackCardRepo;
     @Autowired
     private UsersRepo usersRepo;
+    @Autowired
+    private CubeRepo cubeRepo;
 
     @PostMapping("addCard")
     public String addCard(@RequestParam String email, @RequestParam String nameCard,
@@ -190,6 +195,29 @@ public class CardController {
         for (int i = 0; i < idCard.size(); i++) {
             cardRepo.findByIdCard(idCard.get(i)).get(0).addTesting(test.get(i));
             cardRepo.save(cardRepo.findByIdCard(idCard.get(i)).get(0));
+        }
+        return "Ok";
+    }
+
+    @JsonView(View.CUBA.class)
+    @GetMapping("getCube")
+    public Cube getCube(@RequestParam Integer day) {
+        return cubeRepo.findByDay(day);
+    }
+    @JsonView(View.CUBA.class)
+    @PostMapping("newCube")
+    public String newCube() {
+        Random rand = new java.util.Random();
+        for (int i=8;i<22;i++) {
+                cubeRepo.findByDay(i).setCube1(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.findByDay(i).setCube2(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.findByDay(i).setCube3(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.findByDay(i).setCube4(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.findByDay(i).setCube5(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.findByDay(i).setCube6(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.findByDay(i).setCube7(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.findByDay(i).setCube8(Math.abs(rand.nextInt())%6+1);
+                cubeRepo.save(cubeRepo.findByDay(i));
         }
         return "Ok";
     }
