@@ -41,24 +41,24 @@ public class Users {
     private String role;
 
     @OneToMany
-    @Column(name = "Card",unique = false, nullable = false)
+    @Column(name = "Card",unique = false, nullable = true)
     @JsonView(View.CARD.class)
     private Set<Card> card;
 
-    @Column(name = "Day", unique = false, nullable = false)
+    @Column(name = "Day", unique = false, nullable = true)
     @JsonView(View.USERS.class)
     private Integer Day;
 
-    @Column(name = "GameTable ", unique = false, nullable = false)
-    @JsonView(View.USERS.class)
-    private GameTable  gameTable;
+    @Column(name = "idGameTable ", unique = false, nullable = true)
+    @JsonView(View.GAMETABLE.class)
+    private Integer idGameTable;
 
-    public void setGameTable(GameTable gameTable) {
-        this.gameTable = gameTable;
+    public void setGameTable(Integer gameTable) {
+        this.idGameTable = gameTable;
     }
 
-    public GameTable getGameTable() {
-        return gameTable;
+    public Integer getGameTable() {
+        return idGameTable;
     }
 
     public Integer getDay() {
