@@ -91,9 +91,16 @@ public class GameTableController {
     public Events getEvents(@RequestParam Integer day) {
         return eventsRepo.findByDay(day);
     }
+
     @JsonView(View.GAMETABLE.class)
     @GetMapping("/getData")
     public Integer getData(@RequestParam Integer idGameTable) {
         return gameTableRepo.findByIdGameTable(idGameTable).getDay();
+    }
+
+    @JsonView(View.GAMETABLE.class)
+    @GetMapping("/getGameTable")
+    public List<GameTable> getGameTable(){
+        return gameTableRepo.findByStatus(TableStatus.Start);
     }
 }
