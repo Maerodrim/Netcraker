@@ -51,13 +51,6 @@ public class UsersController {
         return usersRepo.findByEmail(email).get(0).getDay();
     }
     @JsonView(View.USERS.class)
-    @PostMapping("/newDay")
-    public Integer newDay(@RequestParam String email) {
-        usersRepo.findByEmail(email).get(0).newDay();
-        usersRepo.save(usersRepo.findByEmail(email).get(0));
-        return usersRepo.findByEmail(email).get(0).getDay();
-    }
-    @JsonView(View.USERS.class)
     @PostMapping("/nullDay")
     public Integer nullDay(@RequestParam String email) {
         usersRepo.findByEmail(email).get(0).setDay(8);

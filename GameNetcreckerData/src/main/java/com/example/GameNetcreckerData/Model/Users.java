@@ -24,24 +24,42 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(View.USERS.class)
     private Integer idUsers;
+
     @Column(name = "name", unique = false, nullable = true)
     @JsonView(View.USERS.class)
     private String name;
+
     @Column(name = "email", unique = true, nullable = true)
     @JsonView(View.USERS.class)
     private String email;
+
     @Column(name = "Password", unique = false, nullable = true)
     private String password;
+
     @Column(name = "position", unique = false, nullable = false)
     @JsonView(View.USERS.class)
     private String role;
+
     @OneToMany
     @Column(name = "Card",unique = false, nullable = false)
     @JsonView(View.CARD.class)
     private Set<Card> card;
+
     @Column(name = "Day", unique = false, nullable = false)
     @JsonView(View.USERS.class)
     private Integer Day;
+
+    @Column(name = "GameTable ", unique = false, nullable = false)
+    @JsonView(View.USERS.class)
+    private GameTable  gameTable;
+
+    public void setGameTable(GameTable gameTable) {
+        this.gameTable = gameTable;
+    }
+
+    public GameTable getGameTable() {
+        return gameTable;
+    }
 
     public Integer getDay() {
         return Day;

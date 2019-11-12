@@ -9,7 +9,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Cube")
 public class Cube {
-    public Cube() {};
+    public Cube() {
+    }
+
+    public Cube(Integer day, Integer cube1, Integer cube2,
+                Integer cube3, Integer cube4, Integer cube5,
+                Integer cube6, Integer cube7, Integer cube8,
+                Integer idGameTable) {
+        this.day = day;
+        this.cube1 = cube1;
+        this.cube2 = cube2;
+        this.cube3 = cube3;
+        this.cube4 = cube4;
+        this.cube5 = cube5;
+        this.cube6 = cube6;
+        this.cube7 = cube7;
+        this.cube8 = cube8;
+        this.idGameTable = idGameTable;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idCube;
@@ -49,6 +67,18 @@ public class Cube {
     @Column(name = "cuba8", unique = false, nullable = true)
     @JsonView(View.CUBA.class)
     private Integer cube8;
+
+    @Column(name = "idGameTable", unique = false, nullable = true)
+    @JsonView(View.CUBA.class)
+    private Integer idGameTable;
+
+    public Integer getIdGameTable() {
+        return idGameTable;
+    }
+
+    public void setIdGameTable(Integer idGameTable) {
+        this.idGameTable = idGameTable;
+    }
 
     public Integer getDay() {
         return day;

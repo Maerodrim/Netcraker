@@ -201,25 +201,7 @@ public class CardController{
 
     @JsonView(View.CUBA.class)
     @GetMapping("getCube")
-    public Cube getCube(@RequestParam Integer day) {
-        return cubeRepo.findByDay(day);
+    public Cube getCube(@RequestParam Integer day,@RequestParam Integer idGameTable) {
+        return cubeRepo.findByDayAndIdGameTable(day,idGameTable);
     }
-    @JsonView(View.CUBA.class)
-    @PostMapping("newCube")
-    public String newCube() {
-        Random rand = new java.util.Random();
-        for (int i=8;i<22;i++) {
-                cubeRepo.findByDay(i).setCube1(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.findByDay(i).setCube2(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.findByDay(i).setCube3(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.findByDay(i).setCube4(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.findByDay(i).setCube5(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.findByDay(i).setCube6(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.findByDay(i).setCube7(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.findByDay(i).setCube8(Math.abs(rand.nextInt())%6+1);
-                cubeRepo.save(cubeRepo.findByDay(i));
-        }
-        return "Ok";
-    }
-
 }
