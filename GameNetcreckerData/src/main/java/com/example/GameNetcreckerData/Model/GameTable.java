@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "GameTable")
-public class GameTable{
+public class GameTable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(View.GAMETABLE.class)
@@ -34,14 +34,26 @@ public class GameTable{
     @Column(name = "TableStatus", unique = false, nullable = true)
     @JsonView(View.GAMETABLE.class)
     private TableStatus status;
+    @Column(name = "NumberOfPlayers", unique = false, nullable = true)
+    @JsonView(View.GAMETABLE.class)
+    private Integer NumberOfPlayers;
 
     public GameTable() {
     }
 
-    public GameTable(String nameGameTable) {
+    public GameTable(String nameGameTable, Integer numberOfPlayers) {
         this.nameGameTable = nameGameTable;
+        this.NumberOfPlayers = NumberOfPlayers;
         this.status = TableStatus.Start;
-        this.day = 8;
+        this.day = 7;
+    }
+
+    public Integer getNumberOfPlayers() {
+        return NumberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(Integer numberOfPlayers) {
+        NumberOfPlayers = numberOfPlayers;
     }
 
     public Set<Cube> getCube() {

@@ -31,8 +31,8 @@ public class GameTableController {
 
     @JsonView(View.CUBA.class)
     @PostMapping("addGameTable")
-    public String addGameTable(@RequestParam String nameGameTable) {
-        GameTable gameTable = new GameTable(nameGameTable);
+    public String addGameTable(@RequestParam String nameGameTable, @RequestParam Integer numberOfPlayers) {
+        GameTable gameTable = new GameTable(nameGameTable, numberOfPlayers);
         newCube(gameTable.getIdGameTable());
         gameTable.setCube(cubeRepo.findByIdGameTable(gameTable.getIdGameTable()));
         gameTableRepo.save(gameTable);
@@ -40,12 +40,12 @@ public class GameTableController {
     }
 
     @PostMapping("addUsers")
-    public String addUsers(@RequestParam Integer IdGameTable, @RequestParam String email) {
+    public Integer addUsers(@RequestParam Integer IdGameTable, @RequestParam String email) {
         gameTableRepo.findByIdGameTable(IdGameTable).addUsers(usersRepo.findByEmail(email).get(0));
         usersRepo.findByEmail(email).get(0).setGameTable(gameTableRepo.findByIdGameTable(IdGameTable).getIdGameTable());
         usersRepo.save(usersRepo.findByEmail(email).get(0));
         gameTableRepo.save(gameTableRepo.findByIdGameTable(IdGameTable));
-        return "Ok";
+        return gameTableRepo.findByIdGameTable(IdGameTable).getNumberOfPlayers()-gameTableRepo.findByIdGameTable(IdGameTable).getUser().size() ;
     }
 
     @JsonView(View.CUBA.class)
@@ -67,11 +67,12 @@ public class GameTableController {
         }
         return "Ok";
     }
+
     @JsonView(View.Events.class)
     @PostMapping("/newDay")
     public Events newDay(@RequestParam Integer idGameTable) {
-        if(gameTableRepo.findByIdGameTable(idGameTable).getDay()<21){
-        gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.Game);
+        if (gameTableRepo.findByIdGameTable(idGameTable).getDay() < 21) {
+            gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.Game);
             gameTableRepo.findByIdGameTable(idGameTable).setDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
             List<Users> users = List.copyOf(gameTableRepo.findByIdGameTable(idGameTable).getUser());
             for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
@@ -80,12 +81,13 @@ public class GameTableController {
             }
             gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
             return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay());
-        }else{
+        } else {
             gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.End);
             gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
             return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay());
         }
     }
+
     @JsonView(View.Events.class)
     @GetMapping("/getEvents")
     public Events getEvents(@RequestParam Integer day) {
@@ -99,8 +101,8 @@ public class GameTableController {
     }
 
     @JsonView(View.GAMETABLE.class)
-    @GetMapping("/getGameTable")
-    public List<GameTable> getGameTable(){
-        return gameTableRepo.findByStatus(TableStatus.Start);
+    @GetMapping("/getNumberOfPlayers")
+    public Integer  getNumberOfPlayers(@RequestParam Integer idGameTable) {
+        return gameTableRepo.findByIdGameTable(idGameTable).getNumberOfPlayers();
     }
 }
