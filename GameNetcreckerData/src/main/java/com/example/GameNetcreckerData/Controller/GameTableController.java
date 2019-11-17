@@ -31,12 +31,13 @@ public class GameTableController {
 
     @JsonView(View.CUBA.class)
     @PostMapping("addGameTable")
-    public String addGameTable(@RequestParam String nameGameTable, @RequestParam Integer numberOfPlayers) {
+    public Integer addGameTable(@RequestParam String nameGameTable, @RequestParam Integer numberOfPlayers) {
         GameTable gameTable = new GameTable(nameGameTable, numberOfPlayers);
+        gameTableRepo.save(gameTable);
         newCube(gameTable.getIdGameTable());
         gameTable.setCube(cubeRepo.findByIdGameTable(gameTable.getIdGameTable()));
         gameTableRepo.save(gameTable);
-        return "Ok";
+        return gameTable.getIdGameTable();
     }
 
     @PostMapping("addUsers")
@@ -50,7 +51,7 @@ public class GameTableController {
 
     @JsonView(View.CUBA.class)
     @PostMapping("newCube")
-    public String newCube(@RequestParam Integer idGameTable) {
+    public void newCube(@RequestParam Integer idGameTable) {
         Random rand = new java.util.Random();
         for (int i = 8; i < 22; i++) {
             Cube cude = new Cube(i,
@@ -65,7 +66,6 @@ public class GameTableController {
                     idGameTable);
             cubeRepo.save(cude);
         }
-        return "Ok";
     }
 
     @JsonView(View.Events.class)

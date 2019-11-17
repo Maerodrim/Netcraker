@@ -32,7 +32,7 @@ public class Cube {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idCube;
 
-    @Column(name = "day", unique = true, nullable = true)
+    @Column(name = "day", unique = false, nullable = true)
     @JsonView(View.CUBA.class)
     private Integer day;
 
