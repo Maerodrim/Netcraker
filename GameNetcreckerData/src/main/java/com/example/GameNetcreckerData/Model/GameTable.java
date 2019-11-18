@@ -43,7 +43,7 @@ public class GameTable {
 
     public GameTable(String nameGameTable, Integer numberOfPlayers) {
         this.nameGameTable = nameGameTable;
-        this.NumberOfPlayers = NumberOfPlayers;
+        this.NumberOfPlayers = numberOfPlayers;
         this.status = TableStatus.Start;
         this.day = 7;
     }

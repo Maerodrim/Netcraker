@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 @RestController
 @RequestMapping("GameTableController")
@@ -135,5 +134,12 @@ public class GameTableController {
     @GetMapping("/getNumberOfPlayers")
     public Integer  getNumberOfPlayers(@RequestParam Integer idGameTable) {
         return gameTableRepo.findByIdGameTable(idGameTable).getNumberOfPlayers();
+    }
+
+    @DeleteMapping(path = "deleteUsersFromTable")
+    public String deleteUsersFromTable(@RequestParam String email) {
+        gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()).removeUsers(usersRepo.findByEmail(email).get(0));
+        gameTableRepo.save(gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()));
+        return "Ok";
     }
 }
