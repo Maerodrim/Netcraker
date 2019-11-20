@@ -141,21 +141,21 @@ public class Card {
     }
 
     public void addAnalysis(Integer analysis) {
-        this.analysis += analysis;
+        this.analysis = analysis;
         if (analysis >= allAnalysis) {
             status = CardStatus.AnalDone;
         }
     }
 
     public void addDevelopment(Integer development) {
-        this.development += development;
+        this.development = development;
         if (development >= allDevelopment) {
             status = CardStatus.DevDone;
         }
     }
 
     public void addTesting(Integer testing) {
-        this.testing += testing;
+        this.testing = testing;
         if (testing >= allTesting) {
             status = CardStatus.ReadyDeploy;
         }

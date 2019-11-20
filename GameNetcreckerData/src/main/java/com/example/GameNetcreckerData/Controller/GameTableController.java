@@ -45,6 +45,7 @@ public class GameTableController {
     public Integer addUsers(@RequestParam Integer IdGameTable, @RequestParam String email) {
         gameTableRepo.findByIdGameTable(IdGameTable).addUsers(usersRepo.findByEmail(email).get(0));
         usersRepo.findByEmail(email).get(0).setGameTable(gameTableRepo.findByIdGameTable(IdGameTable).getIdGameTable());
+        usersRepo.findByEmail(email).get(0).setDay(7);
         cardRepo.deleteAll(usersRepo.findByEmail(email).get(0).getCard());
         for (int i = 0; i < 36; i++) {
             Card card = new Card(
@@ -103,18 +104,20 @@ public class GameTableController {
                 usersRepo.save(usersRepo.findByEmail(users.get(i).getEmail()).get(0));
             }
             gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
-            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay());
+            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay()+1);
         } else {
             gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.End);
             if(gameTableRepo.findByIdGameTable(idGameTable).getDay()>21){
                 gameTableRepo.delete(gameTableRepo.findByIdGameTable(idGameTable));
+                cubeRepo.deleteAll(cubeRepo.findByIdGameTable(idGameTable));
+                return eventsRepo.findByDay(21);
             }
             for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
                 usersRepo.findByEmail(users.get(i).getEmail()).get(0).newDay();
                 usersRepo.save(usersRepo.findByEmail(users.get(i).getEmail()).get(0));
             }
             gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
-            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay());
+            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay()+1);
         }
         }
 
@@ -140,6 +143,9 @@ public class GameTableController {
     public String deleteUsersFromTable(@RequestParam String email) {
         gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()).removeUsers(usersRepo.findByEmail(email).get(0));
         gameTableRepo.save(gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()));
+        if(0==gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()).getUser().size()){
+            gameTableRepo.delete(gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()));
+        }
         return "Ok";
     }
 }
