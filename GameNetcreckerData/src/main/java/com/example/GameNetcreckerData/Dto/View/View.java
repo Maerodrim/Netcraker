@@ -6,5 +6,6 @@ public class View {
     public static class CUBA {}
     public static class GAMETABLE {}
     public static class Events{}
+    public static class GraphGame{}
 }
 

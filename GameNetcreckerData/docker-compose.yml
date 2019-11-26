@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:11.0
+    hostname: localhost
+    networks:
+      - lan
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: kanban
+  rest-api:
+  image: rest-api:0.0.1
+  ports:
+    - "8080:8080"
+  environment:
+    - "SPRING_PROFILES_ACTIVE=dev"
+ 

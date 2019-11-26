@@ -83,6 +83,11 @@ public class CardController{
     public Card getCard(@RequestParam Integer idCard) {
         return cardRepo.findByIdCard(idCard).get(0);
     }
+    @JsonView(View.CARD.class)
+    @GetMapping("getCardWhite")
+    public List<Card> getCardWhite(@RequestParam String email) {
+        return cardRepo.findByEmailAndColorCard(email,ColorCard.White);
+    }
 
     @JsonView(View.CARD.class)
     @GetMapping("getCardByStatus")
@@ -164,8 +169,11 @@ public class CardController{
         for (int i = 0; i < card.size(); i++) {
             cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).updateCard(card.get(i));
             cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
+            if(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getStatus()==CardStatus.AnalProg){
+                updateDateBeg(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getEmail()).get(0).getDay());
+                cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
+            }
         }
-        log.info("updateCards");
         return "Ok";
     }
 
@@ -195,6 +203,11 @@ public class CardController{
         for (int i = 0; i < idCard.size(); i++) {
             cardRepo.findByIdCard(idCard.get(i)).get(0).addTesting(test.get(i));
             cardRepo.save(cardRepo.findByIdCard(idCard.get(i)).get(0));
+            if(cardRepo.findByIdCard(idCard.get(i)).get(0).getStatus()==CardStatus.ReadyDeploy){
+                updateDateEnd(cardRepo.findByIdCard(idCard.get(i)).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(idCard.get(i)).get(0).getEmail()).get(0).getDay());
+                cardRepo.save(cardRepo.findByIdCard(idCard.get(i)).get(0));
+            }
+
         }
         return "Ok";
     }

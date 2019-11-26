@@ -3,6 +3,7 @@ package com.example.GameNetcreckerData.Controller;
 
 import com.example.GameNetcreckerData.Dto.View.View;
 import com.example.GameNetcreckerData.Model.*;
+import com.example.GameNetcreckerData.Model.Enum.CardStatus;
 import com.example.GameNetcreckerData.Model.Enum.TableStatus;
 import com.example.GameNetcreckerData.Repo.*;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -29,6 +30,8 @@ public class GameTableController {
     private EventsRepo eventsRepo;
     @Autowired
     private NullPackCardRepo nullPackCardRepo;
+    @Autowired
+    private GraphGameRepo graphGameRepo;
 
     @JsonView(View.CUBA.class)
     @PostMapping("addGameTable")
@@ -102,23 +105,73 @@ public class GameTableController {
             for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
                 usersRepo.findByEmail(users.get(i).getEmail()).get(0).newDay();
                 usersRepo.save(usersRepo.findByEmail(users.get(i).getEmail()).get(0));
+                GraphGame graphGame = new GraphGame(
+                        gameTableRepo.findByIdGameTable(idGameTable).getDay(),
+                        cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.AnalProg).size() + cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.AnalDone).size(),
+                        cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.DevProg).size() + cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.DevDone).size(),
+                        cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Test).size(),
+                        users.get(i).getEmail()
+                );
+                if (gameTableRepo.findByIdGameTable(idGameTable).getDay() % 3 == 0) {
+                    for (int j = 0; j < cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).size(); j++)
+                        graphGame.setCost(
+                                (int) (10 * cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getSubs() *
+                                        (cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getDataEndSession()
+                                                - cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getDataBegSession())
+                                        + (Double) cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getMoney()));
+                    for (int j = 0; j < cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).size(); j++)
+                        graphGame.setCost(
+                                (int) (10 * cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getSubs() *
+                                        (cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getDataEndSession()
+                                                - cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getDataBegSession())
+                                        + (Double) cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getMoney()));
+                }
+                graphGameRepo.save(graphGame);
             }
             gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
-            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay()+1);
+            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
         } else {
             gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.End);
-            if(gameTableRepo.findByIdGameTable(idGameTable).getDay()>21){
+            if (gameTableRepo.findByIdGameTable(idGameTable).getDay() > 21) {
+                for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
+                   graphGameRepo.deleteAll(graphGameRepo.findByEmail(users.get(i).getEmail()));
+                }
                 gameTableRepo.delete(gameTableRepo.findByIdGameTable(idGameTable));
                 cubeRepo.deleteAll(cubeRepo.findByIdGameTable(idGameTable));
+
                 return eventsRepo.findByDay(21);
             }
             for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
                 usersRepo.findByEmail(users.get(i).getEmail()).get(0).newDay();
                 usersRepo.save(usersRepo.findByEmail(users.get(i).getEmail()).get(0));
+                GraphGame graphGame = new GraphGame(
+                        gameTableRepo.findByIdGameTable(idGameTable).getDay(),
+                        cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.AnalProg).size() + cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.AnalDone).size(),
+                        cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.DevProg).size() + cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.DevDone).size(),
+                        cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Test).size(),
+                        users.get(i).getEmail()
+                );
+                if (gameTableRepo.findByIdGameTable(idGameTable).getDay() % 3 == 0) {
+                    for (int j = 0; j < cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).size(); j++) {
+                        graphGame.setCost(
+                                (int) (10 * cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getSubs() *
+                                        (cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getDataEndSession()
+                                                - cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getDataBegSession())
+                                        + (Double) cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getMoney()));
+                    }
+                        for (int j = 0; j < cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).size(); j++)
+                            graphGame.setCost(
+                                    (int) (10 * cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getSubs() *
+                                            (cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getDataEndSession()
+                                                    - cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getDataBegSession())
+                                            + (Double) cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getMoney()));
+
+                        graphGameRepo.save(graphGame);
+                    }
+                }
+                gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
+                return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
             }
-            gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
-            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay()+1);
-        }
         }
 
     @JsonView(View.Events.class)
@@ -146,6 +199,7 @@ public class GameTableController {
         if(0==gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()).getUser().size()){
             gameTableRepo.delete(gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()));
         }
+        graphGameRepo.deleteAll(graphGameRepo.findByEmail(email));
         return "Ok";
     }
 }

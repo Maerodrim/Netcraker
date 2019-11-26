@@ -1,5 +1,7 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-ARG DEPENDENCY=target/dependency
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-ENTRYPOINT ["java","-cp","app:app/lib/*","Application"]
+EXPOSE 8080
+ARG JAR_FILE
+COPY ${JAR_FILE} GameNetcreckerData.jar
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=dev","-jar","/GameNetcreckerData.jar"]
+

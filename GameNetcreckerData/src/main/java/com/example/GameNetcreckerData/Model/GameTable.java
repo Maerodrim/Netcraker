@@ -45,7 +45,7 @@ public class GameTable {
         this.nameGameTable = nameGameTable;
         this.NumberOfPlayers = numberOfPlayers;
         this.status = TableStatus.Start;
-        this.day = 7;
+        this.day = 8;
     }
 
     public Integer getNumberOfPlayers() {

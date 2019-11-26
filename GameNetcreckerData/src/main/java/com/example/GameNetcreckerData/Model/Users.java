@@ -17,7 +17,7 @@ public class Users {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.Day=7;
+        this.Day=8;
     }
 
     @Id
