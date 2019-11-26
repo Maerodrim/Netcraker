@@ -3,11 +3,10 @@ package com.example.GameNetcreckerData.Model;
 import com.example.GameNetcreckerData.Dto.View.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "GraphGame")
 public class GraphGame {
     public GraphGame(Integer day, Integer analysis, Integer development, Integer testing, String email) {
         this.day = day;
