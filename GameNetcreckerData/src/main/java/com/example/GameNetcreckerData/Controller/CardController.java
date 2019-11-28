@@ -130,6 +130,14 @@ public class CardController{
     public String updateStatus(@RequestParam Integer idCard) {
         cardRepo.findByIdCard(idCard).get(0).nextCardStatus();
         cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        if(cardRepo.findByIdCard(idCard).get(0).getStatus()==CardStatus.AnalProg){
+            updateDateBeg(cardRepo.findByIdCard(idCard).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(idCard).get(0).getEmail()).get(0).getDay());
+            cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        }
+        if(cardRepo.findByIdCard(idCard).get(0).getStatus()==CardStatus.ReadyDeploy){
+            updateDateEnd(cardRepo.findByIdCard(idCard).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(idCard).get(0).getEmail()).get(0).getDay());
+            cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        }
         return "Ok";
     }
 
