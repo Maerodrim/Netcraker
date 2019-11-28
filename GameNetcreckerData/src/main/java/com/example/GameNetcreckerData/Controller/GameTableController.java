@@ -101,30 +101,25 @@ public class GameTableController {
         gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.Game);
         gameTableRepo.findByIdGameTable(idGameTable).setDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
         List<Users> users = List.copyOf(gameTableRepo.findByIdGameTable(idGameTable).getUser());
-        if (gameTableRepo.findByIdGameTable(idGameTable).getDay() <= 21) {
+        if (gameTableRepo.findByIdGameTable(idGameTable).getDay() < 22) {
             graphMade(idGameTable, users);
             return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
         } else {
             gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.End);
-            if (gameTableRepo.findByIdGameTable(idGameTable).getDay() > 21) {
-                for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
-                    graphGameRepo.deleteAll(graphGameRepo.findByEmail(users.get(i).getEmail()));
-                }
-                gameTableRepo.delete(gameTableRepo.findByIdGameTable(idGameTable));
-                cubeRepo.deleteAll(cubeRepo.findByIdGameTable(idGameTable));
-
-                return eventsRepo.findByDay(21);
-            }
-            for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
-                usersRepo.findByEmail(users.get(i).getEmail()).get(0).newDay();
-                usersRepo.save(usersRepo.findByEmail(users.get(i).getEmail()).get(0));
-
-            }
             gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
             return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
         }
     }
 
+    @DeleteMapping
+    public void endGame(@RequestParam Integer idGameTable){
+        List<Users> users = List.copyOf(gameTableRepo.findByIdGameTable(idGameTable).getUser());
+            for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
+                graphGameRepo.deleteAll(graphGameRepo.findByEmail(users.get(i).getEmail()));
+            }
+            gameTableRepo.delete(gameTableRepo.findByIdGameTable(idGameTable));
+            cubeRepo.deleteAll(cubeRepo.findByIdGameTable(idGameTable));
+    }
     @JsonView(View.Events.class)
     @GetMapping("/getEvents")
     public Events getEvents(@RequestParam Integer day) {
