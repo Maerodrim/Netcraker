@@ -8,11 +8,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "GraphGame")
 public class GraphGame {
-    public GraphGame(Integer day, Integer analysis, Integer development, Integer testing, String email) {
+    public GraphGame(Integer day, Integer analysis, Integer development,
+                     Integer testing,Integer deploy, String email) {
         this.day = day;
         this.analysis = analysis;
         this.development = development;
         this.testing = testing;
+        this.deploy=deploy;
         this.email = email;
         this.cost=0;
     }
@@ -36,6 +38,9 @@ public class GraphGame {
     @Column(name = "testing", unique = false, nullable = true)
     @JsonView(View.GraphGame.class)
     private Integer testing;
+    @Column(name = "deploy", unique = false, nullable = true)
+    @JsonView(View.GraphGame.class)
+    private Integer deploy;
     @Column(name = "cost", unique = false, nullable = true)
     @JsonView(View.GraphGame.class)
     private Integer cost;
@@ -89,5 +94,13 @@ public class GraphGame {
 
     public void setCost(Integer cost) {
         this.cost = cost;
+    }
+
+    public Integer getDeploy() {
+        return deploy;
+    }
+
+    public void setDeploy(Integer deploy) {
+        this.deploy = deploy;
     }
 }
