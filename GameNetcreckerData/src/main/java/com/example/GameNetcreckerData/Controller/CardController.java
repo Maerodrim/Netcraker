@@ -173,6 +173,10 @@ public class CardController{
                 updateDateBeg(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getEmail()).get(0).getDay());
                 cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
             }
+            if(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getStatus()==CardStatus.ReadyDeploy){
+                updateDateEnd(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getEmail()).get(0).getDay());
+                cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
+            }
         }
         return "Ok";
     }

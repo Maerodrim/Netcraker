@@ -165,6 +165,7 @@ public class GameTableController {
                     deploy,
                     users.get(i).getEmail()
             );
+            graphGameRepo.save(graphGame);
             if (gameTableRepo.findByIdGameTable(idGameTable).getDay() % 3 == 0) {
                 for (int j = 0; j < cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).size(); j++) {
                     graphGame.setCost(
