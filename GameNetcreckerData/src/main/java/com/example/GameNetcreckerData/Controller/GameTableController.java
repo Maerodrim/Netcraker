@@ -111,7 +111,7 @@ public class GameTableController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/endGame")
     public void endGame(@RequestParam Integer idGameTable){
         List<Users> users = List.copyOf(gameTableRepo.findByIdGameTable(idGameTable).getUser());
             for (int i = 0; i < gameTableRepo.findByIdGameTable(idGameTable).getUser().size(); i++) {
