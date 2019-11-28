@@ -155,8 +155,8 @@ public class GameTableController {
             usersRepo.save(usersRepo.findByEmail(users.get(i).getEmail()).get(0));
             Integer anal=cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.AnalProg).size();
             Integer dev=cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.DevProg).size() + cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.AnalDone).size();
-            Integer test=cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Test).size()+cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).size();
-            Integer deploy=cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).size();
+            Integer test=cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Test).size()+cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.DevDone).size();
+            Integer deploy=cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).size()+cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).size();
             GraphGame graphGame = new GraphGame(
                     gameTableRepo.findByIdGameTable(idGameTable).getDay(),
                     anal+dev+test+deploy,
