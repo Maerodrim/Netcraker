@@ -166,14 +166,14 @@ public class GameTableController {
                     users.get(i).getEmail()
             );
             for (int j = 0; j < cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).size(); j++) {
-                graphGame.setCost(
+                graphGame.setCost(graphGame.getCost()+
                         (int) (10 * cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getSubs() *
                                 (cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getDataEndSession()
                                         - cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getDataBegSession())
                                 + cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.Deploed).get(j).getMoney()));
             }
             for (int j = 0; j < cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).size(); j++)
-                graphGame.setCost(
+                graphGame.setCost(graphGame.getCost()+
                         (int) (10 * cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getSubs() *
                                 (cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getDataEndSession()
                                         - cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).get(j).getDataBegSession())
