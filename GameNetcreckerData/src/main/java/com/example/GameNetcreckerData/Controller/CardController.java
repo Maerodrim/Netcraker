@@ -119,6 +119,10 @@ public class CardController{
     public String updateTest(@RequestParam Integer idCard, @RequestParam Integer test) {
         cardRepo.findByIdCard(idCard).get(0).addTesting(test);
         cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        if(cardRepo.findByIdCard(idCard).get(0).getStatus()==CardStatus.ReadyDeploy){
+            updateDateEnd(cardRepo.findByIdCard(idCard).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(idCard).get(0).getEmail()).get(0).getDay());
+            cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
+        }
         return "Ok";
     }
 

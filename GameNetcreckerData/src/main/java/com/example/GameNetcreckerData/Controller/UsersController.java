@@ -71,7 +71,7 @@ public class UsersController {
 
     @GetMapping("/getTable")
     public Integer getTable(@RequestParam String email) {
-        if (null == gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable())) {
+        if (!(null == gameTableRepo.findByIdGameTable(usersRepo.findByEmail(email).get(0).getGameTable()))) {
             return usersRepo.findByEmail(email).get(0).getGameTable();
         } else {
             return 0;
