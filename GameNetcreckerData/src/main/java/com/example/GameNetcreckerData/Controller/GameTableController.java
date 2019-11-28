@@ -159,8 +159,8 @@ public class GameTableController {
             Integer deploy=cardRepo.findByEmailAndStatus(users.get(i).getEmail(), CardStatus.ReadyDeploy).size();
             GraphGame graphGame = new GraphGame(
                     gameTableRepo.findByIdGameTable(idGameTable).getDay(),
-                    anal+dev+test,
-                    dev+test,
+                    anal+dev+test+deploy,
+                    dev+test+deploy,
                     test+deploy,
                     deploy,
                     users.get(i).getEmail()
