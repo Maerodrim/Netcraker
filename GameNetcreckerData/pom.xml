@@ -98,7 +98,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
+                <executions>
                     <execution>
                         <id>unpack</id>
                         <phase>package</phase>
@@ -120,40 +120,16 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.2.3</version>
+                <version>1.2.1</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>${project.build.directory}/docker</dockerDirectory>
                     <resources>
                         <resource>
-                            <targetPath>/</targetPath>
                             <directory>${project.build.directory}</directory>
                             <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
                 </configuration>
-            </plugin>
-            <!-- Copy Dockerfile -->
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/docker</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/docker</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
