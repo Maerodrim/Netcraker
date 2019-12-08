@@ -14,6 +14,28 @@ public class NullPackCard {
     public NullPackCard() {
     }
 
+    public NullPackCard(String nameCard, Integer dataBegSession,
+                        Integer dataEndSession, Integer development,
+                        Integer allDevelopment, Integer analysis,
+                        Integer allAnalysis, Integer testing,
+                        Integer allTesting, Double money,
+                        Integer subs, ColorCard colorCard,
+                        CardStatus status, Integer priority) {
+        this.nameCard = nameCard;
+        this.dataBegSession = dataBegSession;
+        this.dataEndSession = dataEndSession;
+        this.development = development;
+        this.allDevelopment = allDevelopment;
+        this.analysis = analysis;
+        this.allAnalysis = allAnalysis;
+        this.testing = testing;
+        this.allTesting = allTesting;
+        this.money = money;
+        this.subs = subs;
+        this.colorCard = colorCard;
+        this.status = status;
+        this.priority = priority;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

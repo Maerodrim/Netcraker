@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("UsersController")
-@Log4j2
 public class UsersController {
     @Autowired
     private UsersRepo usersRepo;

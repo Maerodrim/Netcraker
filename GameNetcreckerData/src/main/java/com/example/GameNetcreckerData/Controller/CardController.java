@@ -6,6 +6,7 @@ import com.example.GameNetcreckerData.Model.Card;
 import com.example.GameNetcreckerData.Model.Cube;
 import com.example.GameNetcreckerData.Model.Enum.CardStatus;
 import com.example.GameNetcreckerData.Model.Enum.ColorCard;
+import com.example.GameNetcreckerData.Model.NullPackCard;
 import com.example.GameNetcreckerData.Repo.CardRepo;
 import com.example.GameNetcreckerData.Repo.CubeRepo;
 import com.example.GameNetcreckerData.Repo.NullPackCardRepo;
@@ -22,7 +23,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("CardController")
-@Log4j2
 public class CardController{
     @Autowired
     private CardRepo cardRepo;
@@ -50,31 +50,83 @@ public class CardController{
         usersRepo.save(usersRepo.findByEmail(email).get(0));
         return "Ok";
     }
+    @PostMapping("addNullCard")
+    public String addNullCard(@RequestParam String nameCard,@RequestParam Integer dataBegSession,
+                              @RequestParam Integer dataEndSession,@RequestParam Integer development,
+                              @RequestParam Integer allDevelopment,@RequestParam Integer analysis,
+                              @RequestParam Integer allAnalysis,@RequestParam Integer testing,
+                              @RequestParam Integer allTesting,@RequestParam Double money,
+                              @RequestParam Integer subs,@RequestParam Integer colorCard,
+                              @RequestParam Integer status,@RequestParam Integer priority) {
+        NullPackCard card = new NullPackCard(nameCard,
+        dataBegSession,
+         dataEndSession,
+         development,
+         allDevelopment,
+         analysis,
+         allAnalysis,
+        testing,
+        allTesting,
+         money,
+         subs,
+                ColorCard.values()[colorCard],
+         CardStatus.values()[status],
+         priority);
+        nullPackCardRepo.save(card);
+        return "Ok";
+    }
 
     @PostMapping("addNullPackCard")
     public String addNullPackCard(@RequestParam String email) {
-        for (int i = 0; i < 36; i++) {
+        List<NullPackCard> nullCard = nullPackCardRepo.findAll();
+        for (int i = 0; i < nullPackCardRepo.findAll().size(); i++) {
             Card card = new Card(
-                    nullPackCardRepo.findByIdCard(i).get(0).getNameCard(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getDataBegSession(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getDataEndSession(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getDevelopment(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getAllDevelopment(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getAnalysis(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getAllAnalysis(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getTesting(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getAllTesting(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getMoney(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getSubs(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getColorCard(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getStatus(),
-                    nullPackCardRepo.findByIdCard(i).get(0).getPriority(),
+                    nullCard.get(i).getNameCard(),
+                    nullCard.get(i).getDataBegSession(),
+                    nullCard.get(i).getDataEndSession(),
+                    nullCard.get(i).getDevelopment(),
+                    nullCard.get(i).getAllDevelopment(),
+                    nullCard.get(i).getAnalysis(),
+                    nullCard.get(i).getAllAnalysis(),
+                    nullCard.get(i).getTesting(),
+                    nullCard.get(i).getAllTesting(),
+                    nullCard.get(i).getMoney(),
+                    nullCard.get(i).getSubs(),
+                    nullCard.get(i).getColorCard(),
+                    nullCard.get(i).getStatus(),
+                    nullCard.get(i).getPriority(),
                     email);
             usersRepo.findByEmail(email).get(0).addCard(card);
             cardRepo.save(card);
             usersRepo.save(usersRepo.findByEmail(email).get(0));
         }
-        log.info("Добавлен нулевой набор");
+        return "Ok";
+    }
+
+    @PostMapping("reloadNullCard")
+    public String reloadNullCard(@RequestParam String nameCard,@RequestParam Integer dataBegSession,
+                              @RequestParam Integer dataEndSession,@RequestParam Integer development,
+                              @RequestParam Integer allDevelopment,@RequestParam Integer analysis,
+                              @RequestParam Integer allAnalysis,@RequestParam Integer testing,
+                              @RequestParam Integer allTesting,@RequestParam Double money,
+                              @RequestParam Integer subs,@RequestParam Integer colorCard,
+                              @RequestParam Integer status,@RequestParam Integer priority) {
+     nullPackCardRepo.delete(nullPackCardRepo.findByColorCardAndNameCard(ColorCard.values()[colorCard],nameCard).get(0));
+        NullPackCard card = new NullPackCard(nameCard,
+                dataBegSession,
+                dataEndSession,
+                development,
+                allDevelopment,
+                analysis,
+                allAnalysis,
+                testing,
+                allTesting,
+                money,
+                subs,
+                ColorCard.values()[colorCard],
+                CardStatus.values()[status],
+                priority);
+        nullPackCardRepo.save(card);
         return "Ok";
     }
 
@@ -83,6 +135,7 @@ public class CardController{
     public Card getCard(@RequestParam Integer idCard) {
         return cardRepo.findByIdCard(idCard).get(0);
     }
+
     @JsonView(View.CARD.class)
     @GetMapping("getCardWhite")
     public List<Card> getCardWhite(@RequestParam String email) {
@@ -165,6 +218,18 @@ public class CardController{
     @DeleteMapping(path = "DeleteCard")
     public String deleteCard(@RequestParam Integer idCard) {
         cardRepo.delete(cardRepo.findByIdCard(idCard).get(0));
+        return "Ok";
+    }
+
+    @DeleteMapping(path = "DeleteNullCard")
+    public String DeleteNullCard() {
+        nullPackCardRepo.deleteAll();
+        return "Ok";
+    }
+
+    @DeleteMapping(path = "DeleteNullCardColor")
+    public String DeleteNullCardColor(@RequestParam String nameCard,@RequestParam Integer colorCard) {
+        nullPackCardRepo.delete(nullPackCardRepo.findByColorCardAndNameCard(ColorCard.values()[colorCard],nameCard).get(0));
         return "Ok";
     }
 
