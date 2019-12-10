@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Random;
+import java.sql.Array;
+import java.util.*;
 
 @RestController
 @RequestMapping("GameTableController")
@@ -45,12 +45,20 @@ public class GameTableController {
 
     @PostMapping("addUsers")
     public Integer addUsers(@RequestParam Integer IdGameTable, @RequestParam String email) {
+        usersRepo.findByEmail(email).get(0).setGameTable(IdGameTable);
+        usersRepo.save(usersRepo.findByEmail(email).get(0));
         gameTableRepo.findByIdGameTable(IdGameTable).addUsers(usersRepo.findByEmail(email).get(0));
-        usersRepo.findByEmail(email).get(0).setGameTable(gameTableRepo.findByIdGameTable(IdGameTable).getIdGameTable());
         usersRepo.findByEmail(email).get(0).setDay(8);
-        cardRepo.deleteAll(usersRepo.findByEmail(email).get(0).getCard());
+        usersRepo.save(usersRepo.findByEmail(email).get(0));
         List<NullPackCard> nullCard = nullPackCardRepo.findAll();
-        for (int i = 0; i < nullPackCardRepo.findAll().size(); i++) {
+        Set<Card> usersCard = usersRepo.findByEmail(email).get(0).getCard();
+        Iterator<Card> iterator = usersCard.iterator();
+        while (iterator.hasNext()) {
+            usersRepo.findByEmail(email).get(0).removeCard(iterator.next());
+        }
+        usersRepo.save(usersRepo.findByEmail(email).get(0));
+        cardRepo.deleteAll(cardRepo.findByEmail(email));
+        for (int i = 0; i < nullCard.size(); i++) {
             Card card = new Card(
                     nullCard.get(i).getNameCard(),
                     nullCard.get(i).getDataBegSession(),
@@ -67,8 +75,8 @@ public class GameTableController {
                     nullCard.get(i).getStatus(),
                     nullCard.get(i).getPriority(),
                     email);
-            usersRepo.findByEmail(email).get(0).addCard(card);
             cardRepo.save(card);
+            usersRepo.findByEmail(email).get(0).addCard(card);
             usersRepo.save(usersRepo.findByEmail(email).get(0));
         }
         usersRepo.save(usersRepo.findByEmail(email).get(0));
@@ -100,14 +108,15 @@ public class GameTableController {
     public Events newDay(@RequestParam Integer idGameTable) {
         gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.Game);
         gameTableRepo.findByIdGameTable(idGameTable).setDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
+        gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
         List<Users> users = List.copyOf(gameTableRepo.findByIdGameTable(idGameTable).getUser());
         if (gameTableRepo.findByIdGameTable(idGameTable).getDay() < 22) {
             graphMade(idGameTable, users);
-            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
+            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay());
         } else {
             gameTableRepo.findByIdGameTable(idGameTable).setStatus(TableStatus.End);
             gameTableRepo.save(gameTableRepo.findByIdGameTable(idGameTable));
-            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay() + 1);
+            return eventsRepo.findByDay(gameTableRepo.findByIdGameTable(idGameTable).getDay());
         }
     }
 
@@ -187,6 +196,12 @@ public class GameTableController {
     public String addEvents(@RequestParam String text,@RequestParam Integer date){
         Events card = new Events(date,text);
         eventsRepo.save(card);
+        return "Ok";
+    }
+
+    @DeleteMapping(path = "deleteEvents")
+    public String deleteEvents(@RequestParam Integer day) {
+        eventsRepo.delete(eventsRepo.findByDay(day));
         return "Ok";
     }
 }

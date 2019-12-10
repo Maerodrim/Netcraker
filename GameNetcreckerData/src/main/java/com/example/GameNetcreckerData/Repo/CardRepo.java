@@ -16,4 +16,5 @@ public interface CardRepo extends CrudRepository<Card, Long> {
     List<Card> findByStatusAndEmail(CardStatus cardStatus, String email);
     List<Card> findByEmailAndColorCard(String email,ColorCard color);
     List<Card> findByEmailAndStatus(String email,CardStatus status);
+    List<Card> findByEmail(String email);
 }
