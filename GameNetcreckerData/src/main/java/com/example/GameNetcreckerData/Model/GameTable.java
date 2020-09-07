@@ -2,8 +2,6 @@ package com.example.GameNetcreckerData.Model;
 
 
 import com.example.GameNetcreckerData.Dto.View.View;
-import com.example.GameNetcreckerData.Model.Enum.CardStatus;
-import com.example.GameNetcreckerData.Model.Enum.ColorCard;
 import com.example.GameNetcreckerData.Model.Enum.TableStatus;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -15,13 +13,13 @@ import java.util.Set;
 public class GameTable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     private Integer idGameTable;
     @Column(name = "Day", unique = false, nullable = true)
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     private Integer day;
     @Column(name = "nameGameTable", unique = false, nullable = true)
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     private String nameGameTable;
     @OneToMany
     @Column(name = "Users", unique = false, nullable = true)
@@ -32,10 +30,10 @@ public class GameTable {
     @JsonView(View.CUBA.class)
     private Set<Cube> cube;
     @Column(name = "TableStatus", unique = false, nullable = true)
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     private TableStatus status;
     @Column(name = "NumberOfPlayers", unique = false, nullable = true)
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     private Integer NumberOfPlayers;
 
     public GameTable() {

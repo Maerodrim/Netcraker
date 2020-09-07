@@ -50,7 +50,7 @@ public class Users {
     private Integer Day;
 
     @Column(name = "idGameTable ", unique = false, nullable = true)
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     private Integer idGameTable;
 
     public void setGameTable(Integer gameTable) {

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Array;
 import java.util.*;
 
 @RestController
@@ -52,29 +51,13 @@ public class GameTableController {
         usersRepo.save(usersRepo.findByEmail(email).get(0));
         List<NullPackCard> nullCard = nullPackCardRepo.findAll();
         Set<Card> usersCard = usersRepo.findByEmail(email).get(0).getCard();
-        Iterator<Card> iterator = usersCard.iterator();
-        while (iterator.hasNext()) {
-            usersRepo.findByEmail(email).get(0).removeCard(iterator.next());
+        for (Card card : usersCard) {
+            usersRepo.findByEmail(email).get(0).removeCard(card);
         }
         usersRepo.save(usersRepo.findByEmail(email).get(0));
         cardRepo.deleteAll(cardRepo.findByEmail(email));
         for (int i = 0; i < nullCard.size(); i++) {
-            Card card = new Card(
-                    nullCard.get(i).getNameCard(),
-                    nullCard.get(i).getDataBegSession(),
-                    nullCard.get(i).getDataEndSession(),
-                    nullCard.get(i).getDevelopment(),
-                    nullCard.get(i).getAllDevelopment(),
-                    nullCard.get(i).getAnalysis(),
-                    nullCard.get(i).getAllAnalysis(),
-                    nullCard.get(i).getTesting(),
-                    nullCard.get(i).getAllTesting(),
-                    nullCard.get(i).getMoney(),
-                    nullCard.get(i).getSubs(),
-                    nullCard.get(i).getColorCard(),
-                    nullCard.get(i).getStatus(),
-                    nullCard.get(i).getPriority(),
-                    email);
+            Card card=CardController.getInstance(email, nullCard, i);
             cardRepo.save(card);
             usersRepo.findByEmail(email).get(0).addCard(card);
             usersRepo.save(usersRepo.findByEmail(email).get(0));
@@ -135,13 +118,13 @@ public class GameTableController {
         return eventsRepo.findByDay(day);
     }
 
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     @GetMapping("/getData")
     public Integer getData(@RequestParam Integer idGameTable) {
         return gameTableRepo.findByIdGameTable(idGameTable).getDay();
     }
 
-    @JsonView(View.GAMETABLE.class)
+    @JsonView(View.GAME_TABLE.class)
     @GetMapping("/getNumberOfPlayers")
     public Integer getNumberOfPlayers(@RequestParam Integer idGameTable) {
         return gameTableRepo.findByIdGameTable(idGameTable).getNumberOfPlayers();

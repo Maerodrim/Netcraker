@@ -80,27 +80,32 @@ public class CardController{
     public String addNullPackCard(@RequestParam String email) {
         List<NullPackCard> nullCard = nullPackCardRepo.findAll();
         for (int i = 0; i < nullPackCardRepo.findAll().size(); i++) {
-            Card card = new Card(
-                    nullCard.get(i).getNameCard(),
-                    nullCard.get(i).getDataBegSession(),
-                    nullCard.get(i).getDataEndSession(),
-                    nullCard.get(i).getDevelopment(),
-                    nullCard.get(i).getAllDevelopment(),
-                    nullCard.get(i).getAnalysis(),
-                    nullCard.get(i).getAllAnalysis(),
-                    nullCard.get(i).getTesting(),
-                    nullCard.get(i).getAllTesting(),
-                    nullCard.get(i).getMoney(),
-                    nullCard.get(i).getSubs(),
-                    nullCard.get(i).getColorCard(),
-                    nullCard.get(i).getStatus(),
-                    nullCard.get(i).getPriority(),
-                    email);
+            Card card = getInstance(email, nullCard, i);
             usersRepo.findByEmail(email).get(0).addCard(card);
             cardRepo.save(card);
             usersRepo.save(usersRepo.findByEmail(email).get(0));
         }
         return "Ok";
+    }
+
+    static Card getInstance(@RequestParam String email, List<NullPackCard> nullCard, int i) {
+        Card card = new Card(
+                nullCard.get(i).getNameCard(),
+                nullCard.get(i).getDataBegSession(),
+                nullCard.get(i).getDataEndSession(),
+                nullCard.get(i).getDevelopment(),
+                nullCard.get(i).getAllDevelopment(),
+                nullCard.get(i).getAnalysis(),
+                nullCard.get(i).getAllAnalysis(),
+                nullCard.get(i).getTesting(),
+                nullCard.get(i).getAllTesting(),
+                nullCard.get(i).getMoney(),
+                nullCard.get(i).getSubs(),
+                nullCard.get(i).getColorCard(),
+                nullCard.get(i).getStatus(),
+                nullCard.get(i).getPriority(),
+                email);
+        return card;
     }
 
     @PostMapping("reloadNullCard")
@@ -172,11 +177,7 @@ public class CardController{
     public String updateTest(@RequestParam Integer idCard, @RequestParam Integer test) {
         cardRepo.findByIdCard(idCard).get(0).addTesting(test);
         cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
-        if(cardRepo.findByIdCard(idCard).get(0).getStatus()==CardStatus.ReadyDeploy){
-            updateDateEnd(cardRepo.findByIdCard(idCard).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(idCard).get(0).getEmail()).get(0).getDay());
-            cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
-        }
-        return "Ok";
+        return getString(idCard);
     }
 
     @PostMapping("updateStatus")
@@ -187,7 +188,11 @@ public class CardController{
             updateDateBeg(cardRepo.findByIdCard(idCard).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(idCard).get(0).getEmail()).get(0).getDay());
             cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
         }
-        if(cardRepo.findByIdCard(idCard).get(0).getStatus()==CardStatus.ReadyDeploy){
+        return getString(idCard);
+    }
+
+    private String getString(@RequestParam Integer idCard) {
+        if(cardRepo.findByIdCard(idCard).get(0).getStatus()== CardStatus.ReadyDeploy){
             updateDateEnd(cardRepo.findByIdCard(idCard).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(idCard).get(0).getEmail()).get(0).getDay());
             cardRepo.save(cardRepo.findByIdCard(idCard).get(0));
         }
@@ -243,16 +248,16 @@ public class CardController{
     @PostMapping("updateCards")
     public String updateCards(@RequestParam ArrayList<Card> card) {
 
-        for (int i = 0; i < card.size(); i++) {
-            cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).updateCard(card.get(i));
-            cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
-            if(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getStatus()==CardStatus.AnalProg){
-                updateDateBeg(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getEmail()).get(0).getDay());
-                cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
+        for (Card value : card) {
+            cardRepo.findByIdCard(value.getIdCard()).get(0).updateCard(value);
+            cardRepo.save(cardRepo.findByIdCard(value.getIdCard()).get(0));
+            if (cardRepo.findByIdCard(value.getIdCard()).get(0).getStatus() == CardStatus.AnalProg) {
+                updateDateBeg(cardRepo.findByIdCard(value.getIdCard()).get(0).getIdCard(), usersRepo.findByEmail(cardRepo.findByIdCard(value.getIdCard()).get(0).getEmail()).get(0).getDay());
+                cardRepo.save(cardRepo.findByIdCard(value.getIdCard()).get(0));
             }
-            if(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getStatus()==CardStatus.ReadyDeploy){
-                updateDateEnd(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getIdCard(),usersRepo.findByEmail(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0).getEmail()).get(0).getDay());
-                cardRepo.save(cardRepo.findByIdCard(card.get(i).getIdCard()).get(0));
+            if (cardRepo.findByIdCard(value.getIdCard()).get(0).getStatus() == CardStatus.ReadyDeploy) {
+                updateDateEnd(cardRepo.findByIdCard(value.getIdCard()).get(0).getIdCard(), usersRepo.findByEmail(cardRepo.findByIdCard(value.getIdCard()).get(0).getEmail()).get(0).getDay());
+                cardRepo.save(cardRepo.findByIdCard(value.getIdCard()).get(0));
             }
         }
         return "Ok";
