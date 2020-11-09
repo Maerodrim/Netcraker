@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("MatrixController")
 @RequiredArgsConstructor
+//localhost:8080/MatrixController/addition?...
 public class MatrixController {
     private final MatrixService matrixService;
 
     @PostMapping("addition")
-    public MatrixDto residentRegistration(@RequestBody MatrixDto firstDto,
+    public MatrixDto additionMatrix(@RequestBody MatrixDto firstDto,
                                           @RequestBody MatrixDto secondDto) {
         return matrixService.addition(firstDto, secondDto);
     }
